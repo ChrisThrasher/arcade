@@ -10,4 +10,7 @@ add_library(ncurses INTERFACE)
 target_include_directories(ncurses SYSTEM INTERFACE ${CURSES_INCLUDE_DIRS})
 target_link_libraries(ncurses INTERFACE ${CURSES_LIBRARIES})
 
+add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wshadow)
+
+add_subdirectory(snake)
 add_subdirectory(twentyfortyeight)
