@@ -74,7 +74,7 @@ void Board::AddNewTile()
         auto& tile = m_board[m_location_distribution(m_rng)][m_location_distribution(m_rng)];
         if (tile == 0)
         {
-            tile = (m_value_distribution(m_rng) == 0) ? 4 : 2;
+            tile = m_value_distribution(m_rng) ? 4 : 2;
             return;
         }
     }

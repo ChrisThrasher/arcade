@@ -13,7 +13,7 @@ class Board
     std::random_device m_rd{};
     std::mt19937 m_rng{m_rd()};
     std::uniform_int_distribution<size_t> m_location_distribution{0, 3};
-    std::uniform_int_distribution<int> m_value_distribution{0, 10};
+    std::bernoulli_distribution m_value_distribution{0.1};
     int m_score{0};
 
     enum class Direction
