@@ -1,2 +1,0 @@
-add_executable(twentyfortyeight TwentyFortyEight.cpp Board.cpp)
-target_link_libraries(twentyfortyeight PRIVATE ncurses)
