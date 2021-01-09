@@ -14,3 +14,11 @@ add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wshadow)
 
 add_subdirectory(snake)
 add_subdirectory(twentyfortyeight)
+
+add_custom_target(format
+    COMMAND clang-format `git ls-files *.h *.cpp` -i
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+add_custom_target(tidy
+    COMMAND clang-tidy -p build/compile_commands.json `git ls-files *.cpp`
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
