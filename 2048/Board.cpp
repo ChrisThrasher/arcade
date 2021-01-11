@@ -34,7 +34,7 @@ Board::Board() { Reset(); }
 void Board::Reset()
 {
     m_score = 0;
-    m_board = std::array<std::array<int, 4>, 4>{};
+    m_board = {};
     AddNewTile();
     AddNewTile();
 }
