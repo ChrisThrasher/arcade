@@ -31,8 +31,7 @@ bool Controller::Running() { return m_running; }
 
 void Controller::GetInput()
 {
-    switch (getch())
-    {
+    switch (getch()) {
     case KEY_UP:
         m_game.Up();
         break;
@@ -61,12 +60,9 @@ void Controller::Draw()
     clear();
 
     std::stringstream out;
-    for (auto& row : m_game.Board())
-    {
-        for (auto& tile : row)
-        {
-            switch (tile)
-            {
+    for (auto& row : m_game.Board()) {
+        for (auto& tile : row) {
+            switch (tile) {
             case Game::Tile::EMPTY:
                 out << '.';
                 break;

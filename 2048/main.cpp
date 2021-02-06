@@ -19,13 +19,11 @@ int main()
     Board board;
 
     bool running = true;
-    while (running)
-    {
+    while (running) {
         clear();
         mvaddstr(1, 0, Draw(board).c_str());
 
-        switch (getch())
-        {
+        switch (getch()) {
         case KEY_UP:
             board.Up();
             break;
@@ -47,8 +45,7 @@ int main()
             break;
         }
 
-        switch (board.GameState())
-        {
+        switch (board.GameState()) {
         case Board::State::IN_PROGRESS:
             break;
         case Board::State::SUCCESS:
@@ -73,11 +70,9 @@ auto Draw(const Board& board) -> std::string
     out << "Score: " << board.Score() << "\n\n";
 
     out << std::setfill(' ');
-    for (const auto& row : board.Data())
-    {
+    for (const auto& row : board.Data()) {
         out << "---------------------\n";
-        for (const auto& cell : row)
-        {
+        for (const auto& cell : row) {
             out << '|';
             out << std::right << std::setw(4);
             if (cell != 0)

@@ -11,12 +11,9 @@ void Draw(ConnectFour game, int column)
     clear();
 
     auto board = game.Board();
-    for (size_t row = 0; row < 6; ++row)
-    {
-        for (size_t col = 0; col < 7; ++col)
-        {
-            switch (board[col][row])
-            {
+    for (size_t row = 0; row < 6; ++row) {
+        for (size_t col = 0; col < 7; ++col) {
+            switch (board[col][row]) {
             case Tile::EMPTY:
                 mvaddstr(6 - row, col * 2, "_");
                 break;
@@ -34,8 +31,7 @@ void Draw(ConnectFour game, int column)
         }
     }
 
-    switch (game.ActiveTile())
-    {
+    switch (game.ActiveTile()) {
     case Tile::EMPTY:
         break;
     case Tile::RED:
@@ -69,14 +65,12 @@ int main()
     init_pair(2, COLOR_YELLOW, -1);
 
     ConnectFour game;
-    while (game.Running())
-    {
+    while (game.Running()) {
         static int column = 3;
 
         Draw(game, column);
 
-        switch (getch())
-        {
+        switch (getch()) {
         case KEY_LEFT:
             column = std::max(0, column - 1);
             break;
@@ -93,8 +87,7 @@ int main()
 
     Draw(game, -1);
     mvaddstr(10, 0, "Game over");
-    while (getch() != 'q')
-        ;
+    while (getch() != 'q') { }
 
 end:
     endwin();

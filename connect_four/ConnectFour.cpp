@@ -5,8 +5,7 @@
 bool FourInARow(const std::vector<Tile>& line)
 {
     int consecutive_matches = 1;
-    for (size_t i = 1; i < line.size(); ++i)
-    {
+    for (size_t i = 1; i < line.size(); ++i) {
         if (line[i] == line[i - 1] and line[i] != Tile::EMPTY)
             ++consecutive_matches;
         else
@@ -22,8 +21,7 @@ bool FourInARow(const std::vector<Tile>& line)
 bool ConnectFour::IsRunning() const
 {
     // Check columns
-    for (size_t col = 0; col < Cols(); ++col)
-    {
+    for (size_t col = 0; col < Cols(); ++col) {
         std::vector<Tile> tiles;
         for (size_t row = 0; row < Rows(); ++row)
             tiles.push_back(m_board[col][row]);
@@ -32,8 +30,7 @@ bool ConnectFour::IsRunning() const
     }
 
     // Check rows
-    for (size_t row = 0; row < Rows(); ++row)
-    {
+    for (size_t row = 0; row < Rows(); ++row) {
         std::vector<Tile> tiles;
         for (size_t col = 0; col < Cols(); ++col)
             tiles.push_back(m_board[col][row]);
@@ -82,10 +79,8 @@ bool ConnectFour::IsRunning() const
 
 void ConnectFour::Add(size_t location)
 {
-    for (auto& tile : m_board[location])
-    {
-        if (tile == Tile::EMPTY)
-        {
+    for (auto& tile : m_board[location]) {
+        if (tile == Tile::EMPTY) {
             tile = m_active_tile;
             m_active_tile = (m_active_tile == Tile::RED) ? Tile::YEL : Tile::RED;
             break;

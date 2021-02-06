@@ -10,8 +10,8 @@ void Merge(int& dest, int& src, int& score)
 
 void ProcessTileset(int& tile1, int& tile2, int& tile3, int& tile4, int& score)
 {
-    std::array<std::reference_wrapper<int>, 4> tileset = {
-        std::ref(tile1), std::ref(tile2), std::ref(tile3), std::ref(tile4)};
+    std::array<std::reference_wrapper<int>, 4> tileset
+        = { std::ref(tile1), std::ref(tile2), std::ref(tile3), std::ref(tile4) };
 
     // Sift down
     for (size_t i = 1; i < tileset.size(); ++i)
@@ -43,8 +43,7 @@ void Board::Move(const Direction direction)
 {
     const auto previous_board = m_board;
 
-    switch (direction)
-    {
+    switch (direction) {
     case Direction::UP:
         for (size_t column = 0; column < 4; ++column)
             ProcessTileset(m_board[0][column], m_board[1][column], m_board[2][column], m_board[3][column], m_score);
@@ -69,11 +68,9 @@ void Board::Move(const Direction direction)
 
 void Board::AddNewTile()
 {
-    while (not IsFull())
-    {
+    while (not IsFull()) {
         auto& tile = m_board[m_location_distribution(m_rng)][m_location_distribution(m_rng)];
-        if (tile == 0)
-        {
+        if (tile == 0) {
             tile = m_value_distribution(m_rng) ? 4 : 2;
             return;
         }
@@ -99,26 +96,22 @@ auto Board::GameState() const -> Board::State
     auto board = m_board;
     auto score = m_score;
     auto board_changed = false;
-    for (size_t column = 0; column < 4; ++column)
-    {
+    for (size_t column = 0; column < 4; ++column) {
         ProcessTileset(board[0][column], board[1][column], board[2][column], board[3][column], score);
         if (board != m_board)
             board_changed = true;
     }
-    for (size_t column = 0; column < 4; ++column)
-    {
+    for (size_t column = 0; column < 4; ++column) {
         ProcessTileset(board[3][column], board[2][column], board[1][column], board[0][column], score);
         if (board != m_board)
             board_changed = true;
     }
-    for (size_t row = 0; row < 4; ++row)
-    {
+    for (size_t row = 0; row < 4; ++row) {
         ProcessTileset(board[row][0], board[row][1], board[row][2], board[row][3], score);
         if (board != m_board)
             board_changed = true;
     }
-    for (size_t row = 0; row < 4; ++row)
-    {
+    for (size_t row = 0; row < 4; ++row) {
         ProcessTileset(board[row][3], board[row][2], board[row][1], board[row][0], score);
         if (board != m_board)
             board_changed = true;

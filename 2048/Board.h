@@ -7,22 +7,15 @@
 void Merge(int& dest, int& src);
 void ProcessTileset(int& tile1, int& tile2, int& tile3, int& tile4, int& score);
 
-class Board
-{
-    std::array<std::array<int, 4>, 4> m_board{};
-    std::random_device m_rd{};
-    std::mt19937 m_rng{m_rd()};
-    std::uniform_int_distribution<size_t> m_location_distribution{0, 3};
-    std::bernoulli_distribution m_value_distribution{0.1};
-    int m_score{0};
+class Board {
+    std::array<std::array<int, 4>, 4> m_board {};
+    std::random_device m_rd {};
+    std::mt19937 m_rng { m_rd() };
+    std::uniform_int_distribution<size_t> m_location_distribution { 0, 3 };
+    std::bernoulli_distribution m_value_distribution { 0.1 };
+    int m_score { 0 };
 
-    enum class Direction
-    {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    };
+    enum class Direction { UP, DOWN, LEFT, RIGHT };
 
     void Move(const Direction);
     void AddNewTile();
@@ -31,12 +24,7 @@ class Board
 public:
     Board();
 
-    enum class State
-    {
-        IN_PROGRESS,
-        SUCCESS,
-        FAILURE
-    };
+    enum class State { IN_PROGRESS, SUCCESS, FAILURE };
 
     void Reset();
     auto GameState() const -> State;
