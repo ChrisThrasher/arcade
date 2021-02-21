@@ -18,14 +18,10 @@ void Draw(ConnectFour game, int column)
                 tui::Print(6 - row, col * 2, "_");
                 break;
             case Tile::RED:
-                attron(COLOR_PAIR(1));
-                tui::Print(6 - row, col * 2, "O");
-                attroff(COLOR_PAIR(1));
+                tui::Print(6 - row, col * 2, "O", COLOR_PAIR(1));
                 break;
             case Tile::YEL:
-                attron(COLOR_PAIR(2));
-                tui::Print(6 - row, col * 2, "O");
-                attroff(COLOR_PAIR(2));
+                tui::Print(6 - row, col * 2, "O", COLOR_PAIR(2));
                 break;
             }
         }
@@ -35,14 +31,10 @@ void Draw(ConnectFour game, int column)
     case Tile::EMPTY:
         break;
     case Tile::RED:
-        attron(COLOR_PAIR(1));
-        tui::Print(7, column * 2, "^");
-        attroff(COLOR_PAIR(1));
+        tui::Print(7, column * 2, "^", COLOR_PAIR(1));
         break;
     case Tile::YEL:
-        attron(COLOR_PAIR(2));
-        tui::Print(7, column * 2, "^");
-        attroff(COLOR_PAIR(2));
+        tui::Print(7, column * 2, "^", COLOR_PAIR(2));
         break;
     }
 
