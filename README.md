@@ -2,7 +2,9 @@
 
 A collection of terminal games
 
-# Games
+# Apps
 
 * 2048
 * Snake
+* Connect Four
+* Rubik's Cube timer

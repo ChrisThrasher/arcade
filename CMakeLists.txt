@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 project(arcade CXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Curses REQUIRED)
@@ -13,6 +14,7 @@ target_link_libraries(Curses::ncurses INTERFACE ${CURSES_LIBRARIES})
 add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wshadow)
 
 add_subdirectory(connect_four)
+add_subdirectory(cube_timer)
 add_subdirectory(snake)
 add_subdirectory(2048)
 
