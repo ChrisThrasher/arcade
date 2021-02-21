@@ -3,7 +3,6 @@
 #include <Tui/Tui.h>
 
 #include <algorithm>
-#include <iostream>
 
 void Draw(ConnectFour game, int column)
 {

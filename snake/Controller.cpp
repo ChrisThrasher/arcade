@@ -2,8 +2,6 @@
 
 #include <Tui/Tui.h>
 
-#include <iostream>
-
 Controller::Controller()
 {
     tui::Init();
@@ -15,7 +13,11 @@ Controller::Controller()
     init_pair(1, COLOR_GREEN, -1);
 }
 
-Controller::~Controller() { std::cout << "Score: " << m_game.Score() << '\n'; }
+Controller::~Controller()
+{
+    tui::Print(22, 0, "Game over.");
+    while (getch() != 'q') { };
+}
 
 void Controller::Cycle()
 {
