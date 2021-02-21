@@ -72,6 +72,6 @@ void Controller::Draw()
     out << '\n';
     out << "Score: " << m_game.Score() << '\n';
 
-    mvaddstr(0, 0, out.str().c_str());
+    tui::Print(0, 0, out.str());
     refresh();
 }

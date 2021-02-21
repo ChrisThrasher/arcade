@@ -15,16 +15,16 @@ void Draw(ConnectFour game, int column)
         for (size_t col = 0; col < 7; ++col) {
             switch (board[col][row]) {
             case Tile::EMPTY:
-                mvaddstr(6 - row, col * 2, "_");
+                tui::Print(6 - row, col * 2, "_");
                 break;
             case Tile::RED:
                 attron(COLOR_PAIR(1));
-                mvaddstr(6 - row, col * 2, "O");
+                tui::Print(6 - row, col * 2, "O");
                 attroff(COLOR_PAIR(1));
                 break;
             case Tile::YEL:
                 attron(COLOR_PAIR(2));
-                mvaddstr(6 - row, col * 2, "O");
+                tui::Print(6 - row, col * 2, "O");
                 attroff(COLOR_PAIR(2));
                 break;
             }
@@ -36,17 +36,17 @@ void Draw(ConnectFour game, int column)
         break;
     case Tile::RED:
         attron(COLOR_PAIR(1));
-        mvaddstr(7, column * 2, "^");
+        tui::Print(7, column * 2, "^");
         attroff(COLOR_PAIR(1));
         break;
     case Tile::YEL:
         attron(COLOR_PAIR(2));
-        mvaddstr(7, column * 2, "^");
+        tui::Print(7, column * 2, "^");
         attroff(COLOR_PAIR(2));
         break;
     }
 
-    mvaddstr(8, 0, "Press q to exit");
+    tui::Print(8, 0, "Press q to exit");
 
     refresh();
 }
@@ -82,6 +82,6 @@ int main()
     }
 
     Draw(game, -1);
-    mvaddstr(10, 0, "Game over");
+    tui::Print(10, 0, "Game over");
     while (getch() != 'q') { }
 }

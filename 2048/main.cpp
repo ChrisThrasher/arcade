@@ -17,7 +17,7 @@ int main()
     bool running = true;
     while (running) {
         clear();
-        mvaddstr(1, 0, Draw(board).c_str());
+        tui::Print(1, 0, Draw(board));
 
         switch (getch()) {
         case KEY_UP:
