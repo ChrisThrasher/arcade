@@ -58,11 +58,11 @@ int main()
             break;
         case Board::State::SUCCESS:
             tui::Print(14, 0, "You win!");
-            while (getch() != 'q') { }
+            tui::WaitFor('q');
             return 0;
         case Board::State::FAILURE:
             tui::Print(14, 0, "Game over.");
-            while (getch() != 'q') { }
+            tui::WaitFor('q');
             return -1;
         }
     }

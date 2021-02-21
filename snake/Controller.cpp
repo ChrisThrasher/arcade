@@ -16,7 +16,7 @@ Controller::Controller()
 Controller::~Controller()
 {
     tui::Print(22, 0, "Game over.");
-    while (getch() != 'q') { };
+    tui::WaitFor('q');
 }
 
 void Controller::Cycle()

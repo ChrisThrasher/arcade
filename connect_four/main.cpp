@@ -73,5 +73,5 @@ int main()
 
     Draw(game, -1);
     tui::Print(10, 0, "Game over");
-    while (getch() != 'q') { }
+    tui::WaitFor('q');
 }

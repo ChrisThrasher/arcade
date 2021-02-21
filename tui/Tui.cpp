@@ -20,4 +20,9 @@ void Print(int row, int col, const std::string& text, int color)
     attroff(color);
 }
 
+void WaitFor(char c)
+{
+    while (getch() != c) { };
+}
+
 }
