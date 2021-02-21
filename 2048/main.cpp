@@ -1,20 +1,16 @@
 #include "Board.h"
 
+#include <Tui/Tui.h>
+
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-
-#include <ncurses.h>
 
 auto Draw(const Board& board) -> std::string;
 
 int main()
 {
-    initscr();
-    cbreak();
-    noecho();
-    clear();
-    keypad(stdscr, TRUE);
+    tui::Init();
 
     Board board;
 
@@ -41,7 +37,6 @@ int main()
             break;
         case 'q':
             running = false;
-            endwin();
             break;
         }
 
@@ -50,13 +45,11 @@ int main()
             break;
         case Board::State::SUCCESS:
             running = false;
-            endwin();
             std::cout << Draw(board);
             std::cout << "You win!\n";
             break;
         case Board::State::FAILURE:
             running = false;
-            endwin();
             std::cout << Draw(board);
             std::cout << "Game over.\n";
             break;

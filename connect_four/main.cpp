@@ -1,6 +1,6 @@
 #include "ConnectFour.h"
 
-#include <ncurses.h>
+#include <Tui/Tui.h>
 
 #include <algorithm>
 #include <iostream>
@@ -53,11 +53,7 @@ void Draw(ConnectFour game, int column)
 
 int main()
 {
-    initscr();
-    cbreak();
-    noecho();
-    clear();
-    keypad(stdscr, TRUE);
+    tui::Init();
 
     start_color();
     use_default_colors();
@@ -81,14 +77,11 @@ int main()
             game.Add(column);
             break;
         case 'q':
-            goto end;
+            return 0;
         }
     }
 
     Draw(game, -1);
     mvaddstr(10, 0, "Game over");
     while (getch() != 'q') { }
-
-end:
-    endwin();
 }

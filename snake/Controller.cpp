@@ -1,25 +1,17 @@
 #include "Controller.h"
 
-#include <ncurses.h>
+#include <Tui/Tui.h>
 
 #include <iostream>
 #include <sstream>
 
 Controller::Controller()
 {
-    initscr();
-    cbreak();
-    noecho();
-    clear();
+    tui::Init();
     timeout(50);
-    keypad(stdscr, TRUE);
 }
 
-Controller::~Controller()
-{
-    endwin();
-    std::cout << "Score: " << m_game.Score() << '\n';
-}
+Controller::~Controller() { std::cout << "Score: " << m_game.Score() << '\n'; }
 
 void Controller::Cycle()
 {
