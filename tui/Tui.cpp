@@ -9,6 +9,7 @@ void Init()
     noecho();
     clear();
     keypad(stdscr, TRUE);
+    curs_set(0);
     std::atexit([]() { endwin(); });
 }
 

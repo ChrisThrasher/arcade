@@ -96,7 +96,6 @@ int main()
                 / (sorted_times.size() - 2);
             tui::Print(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
         }
-        move(row, 0);
 
         refresh();
     }

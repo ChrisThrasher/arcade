@@ -75,7 +75,6 @@ void Controller::Draw()
     }
 
     tui::Print(++row, 0, "Score: " + std::to_string(m_game.Score()));
-    move(++row, 0);
 
     refresh();
 }
