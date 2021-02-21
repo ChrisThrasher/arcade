@@ -19,7 +19,7 @@ auto FormatDuration(std::chrono::nanoseconds duration)
     std::stringstream ss;
     ss << std::setfill('0');
     ss << std::setw(1) << minutes.count() << ':';
-    ss << std::setw(2) << seconds.count() << ':';
+    ss << std::setw(2) << seconds.count() << '.';
     ss << std::setw(2) << milliseconds.count() / 10;
     return ss.str();
 }
