@@ -2,22 +2,35 @@
 
 #include <Tui/Tui.h>
 
+#include <cmath>
 #include <iomanip>
-#include <iostream>
 #include <sstream>
 
-auto Draw(const Board& board) -> std::string;
+void Draw(const Board& board);
 
 int main()
 {
     tui::Init();
 
+    start_color();
+    use_default_colors();
+    init_pair(1, -1, -1);
+    init_pair(2, -1, -1);
+    init_pair(3, COLOR_YELLOW, -1);
+    init_pair(4, COLOR_RED, -1);
+    init_pair(5, COLOR_MAGENTA, -1);
+    init_pair(6, COLOR_CYAN, -1);
+    init_pair(7, COLOR_BLUE, -1);
+    init_pair(8, COLOR_GREEN, -1);
+    init_pair(9, COLOR_GREEN, -1);
+    init_pair(10, COLOR_GREEN, -1);
+    init_pair(11, COLOR_GREEN, -1);
+
     Board board;
 
-    bool running = true;
-    while (running) {
+    for (;;) {
         clear();
-        tui::Print(1, 0, Draw(board));
+        Draw(board);
 
         switch (getch()) {
         case KEY_UP:
@@ -36,7 +49,7 @@ int main()
             board.Reset();
             break;
         case 'q':
-            running = false;
+            return 0;
             break;
         }
 
@@ -44,41 +57,41 @@ int main()
         case Board::State::IN_PROGRESS:
             break;
         case Board::State::SUCCESS:
-            running = false;
-            std::cout << Draw(board);
-            std::cout << "You win!\n";
-            break;
+            tui::Print(14, 0, "You win!");
+            while (getch() != 'q') { }
+            return 0;
         case Board::State::FAILURE:
-            running = false;
-            std::cout << Draw(board);
-            std::cout << "Game over.\n";
-            break;
+            tui::Print(14, 0, "Game over.");
+            while (getch() != 'q') { }
+            return -1;
         }
     }
 }
 
-auto Draw(const Board& board) -> std::string
+void Draw(const Board& board)
 {
-    std::stringstream out;
-    out << "Score: " << board.Score() << "\n\n";
+    const auto& data = board.Data();
 
-    out << std::setfill(' ');
-    for (const auto& row : board.Data()) {
-        out << "---------------------\n";
-        for (const auto& cell : row) {
-            out << '|';
-            out << std::right << std::setw(4);
+    size_t row = 0;
+    for (; row < data.size(); ++row) {
+        tui::Print(row * 2, 0, "---------------------\n");
+        size_t col = 0;
+        for (; col < data[row].size(); ++col) {
+            tui::Print(row * 2 + 1, col * 5, "|");
+            std::stringstream out;
+            out << std::setfill(' ') << std::right << std::setw(4);
+            auto& cell = data[row][col];
             if (cell != 0)
                 out << cell;
             else
                 out << ' ';
+            tui::Print(row * 2 + 1, col * 5 + 1, out.str(), COLOR_PAIR(static_cast<int>(std::log2(cell))));
         }
-        out << "|\n";
+        tui::Print(row * 2 + 1, col * 5, "|");
     }
-    out << "---------------------\n\n";
+    tui::Print(row * 2, 0, "---------------------\n");
 
-    out << "q: Quit\n";
-    out << "n: New game\n\n";
-
-    return out.str();
+    tui::Print(row * 2 + 1, 0, "Score: " + std::to_string(board.Score()));
+    tui::Print(row * 2 + 3, 0, "q: Quit");
+    tui::Print(row * 2 + 4, 0, "n: New game");
 }
