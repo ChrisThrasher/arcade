@@ -1,24 +1,22 @@
 #include "Controller.h"
 
-#include <ncurses.h>
-
-#include <iostream>
-#include <sstream>
+#include <Tui/Tui.h>
 
 Controller::Controller()
 {
-    initscr();
-    cbreak();
-    noecho();
-    clear();
+    tui::Init();
     timeout(50);
-    keypad(stdscr, TRUE);
+
+    start_color();
+    use_default_colors();
+    init_pair(2, COLOR_RED, -1);
+    init_pair(1, COLOR_GREEN, -1);
 }
 
 Controller::~Controller()
 {
-    endwin();
-    std::cout << "Score: " << m_game.Score() << '\n';
+    tui::Print(22, 0, "Game over.");
+    tui::WaitFor('q');
 }
 
 void Controller::Cycle()
@@ -59,27 +57,26 @@ void Controller::Draw()
 {
     clear();
 
-    std::stringstream out;
-    for (auto& row : m_game.Board()) {
-        for (auto& tile : row) {
-            switch (tile) {
+    const auto& board = m_game.Board();
+
+    size_t row = 0;
+    for (; row < board.size(); ++row) {
+        for (size_t col = 0; col < board[row].size(); ++col) {
+            switch (board[row][col]) {
             case Game::Tile::EMPTY:
-                out << '.';
+                tui::Print(row, col * 2, ".");
                 break;
             case Game::Tile::SNAKE:
-                out << '0';
+                tui::Print(row, col * 2, "0", COLOR_PAIR(1));
                 break;
             case Game::Tile::FRUIT:
-                out << 'X';
+                tui::Print(row, col * 2, "X", COLOR_PAIR(2));
                 break;
             }
-            out << ' ';
         }
-        out << '\n';
     }
-    out << '\n';
-    out << "Score: " << m_game.Score() << '\n';
 
-    mvaddstr(0, 0, out.str().c_str());
+    tui::Print(++row, 0, "Score: " + std::to_string(m_game.Score()));
+
     refresh();
 }

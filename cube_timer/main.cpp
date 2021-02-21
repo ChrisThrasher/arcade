@@ -1,6 +1,6 @@
 #include "Timer.h"
 
-#include <ncurses.h>
+#include <Tui/Tui.h>
 
 #include <algorithm>
 #include <chrono>
@@ -19,27 +19,15 @@ auto FormatDuration(std::chrono::nanoseconds duration)
     std::stringstream ss;
     ss << std::setfill('0');
     ss << std::setw(1) << minutes.count() << ':';
-    ss << std::setw(2) << seconds.count() << ':';
+    ss << std::setw(2) << seconds.count() << '.';
     ss << std::setw(2) << milliseconds.count() / 10;
     return ss.str();
 }
 
-void Print(int row, int col, const std::string& text, int color = 0)
-{
-    attron(color);
-    mvaddstr(row, col, text.c_str());
-    attroff(color);
-}
-
 int main()
 {
-    initscr();
-    cbreak();
-    noecho();
-    clear();
-    keypad(stdscr, TRUE);
+    tui::Init();
     timeout(50);
-    std::atexit([]() { endwin(); });
 
     start_color();
     use_default_colors();
@@ -73,42 +61,41 @@ int main()
         clear();
 
         auto row = 0;
-        Print(row++, 0, "========Controls========");
-        Print(row++, 0, "SPACE: Start/stop timer");
-        Print(row++, 0, "s: Save time");
-        Print(row++, 0, "d: Delete last time");
-        Print(row++, 0, "r: Reset");
-        Print(row++, 0, "q: Quit");
+        tui::Print(row++, 0, "========Controls========");
+        tui::Print(row++, 0, "SPACE: Start/stop timer");
+        tui::Print(row++, 0, "s: Save time");
+        tui::Print(row++, 0, "d: Delete last time");
+        tui::Print(row++, 0, "r: Reset");
+        tui::Print(row++, 0, "q: Quit");
 
         ++row;
-        Print(row++, 9, FormatDuration(timer.Query()));
+        tui::Print(row++, 9, FormatDuration(timer.Query()));
 
         ++row;
-        Print(row++, 0, "==========Times=========");
+        tui::Print(row++, 0, "==========Times=========");
         auto sorted_times = times;
         std::sort(sorted_times.begin(), sorted_times.end());
         for (size_t i = 0; i < times.size(); ++i) {
-            Print(row, 0, std::to_string(i + 1));
-            Print(row, 5, FormatDuration(times[i]));
+            tui::Print(row, 0, std::to_string(i + 1));
+            tui::Print(row, 5, FormatDuration(times[i]));
             auto color = 0;
             if (i == 0)
                 color = COLOR_PAIR(1);
             else if (i == times.size() - 1)
                 color = COLOR_PAIR(2);
-            Print(row++, 17, FormatDuration(sorted_times[i]), color);
+            tui::Print(row++, 17, FormatDuration(sorted_times[i]), color);
         }
         if (!times.empty()) {
             ++row;
             auto average = std::accumulate(times.begin(), times.end(), std::chrono::nanoseconds(0)) / times.size();
-            Print(row++, 0, "Average: " + FormatDuration(average));
+            tui::Print(row++, 0, "Average: " + FormatDuration(average));
         }
         if (sorted_times.size() >= 3) {
             auto mid_avg
                 = std::accumulate(sorted_times.begin() + 1, sorted_times.end() - 1, std::chrono::nanoseconds(0))
                 / (sorted_times.size() - 2);
-            Print(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
+            tui::Print(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
         }
-        move(row, 0);
 
         refresh();
     }
