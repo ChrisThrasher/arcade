@@ -33,6 +33,8 @@ int main()
     use_default_colors();
     init_pair(1, COLOR_GREEN, -1);
     init_pair(2, COLOR_RED, -1);
+    constexpr auto GREEN = COLOR_PAIR(1);
+    constexpr auto RED = COLOR_PAIR(2);
 
     std::vector<std::chrono::nanoseconds> times;
     Timer timer;
@@ -78,18 +80,22 @@ int main()
         for (size_t i = 0; i < times.size(); ++i) {
             tui::Print(row, 0, std::to_string(i + 1));
 
-            auto color = 0;
-            if (times[i] == sorted_times.front())
-                color = COLOR_PAIR(1);
+            int color = 0;
+            if (times.size() <= 1)
+                color = 0;
+            else if (times[i] == sorted_times.front())
+                color = GREEN;
             else if (times[i] == sorted_times.back())
-                color = COLOR_PAIR(2);
+                color = RED;
             tui::Print(row, 5, FormatDuration(times[i]), color);
 
-            auto sorted_color = 0;
-            if (i == 0)
-                sorted_color = COLOR_PAIR(1);
+            int sorted_color = 0;
+            if (sorted_times.size() <= 1)
+                sorted_color = 0;
+            else if (i == 0)
+                sorted_color = GREEN;
             else if (i == times.size() - 1)
-                sorted_color = COLOR_PAIR(2);
+                sorted_color = RED;
             tui::Print(row++, 17, FormatDuration(sorted_times[i]), sorted_color);
         }
         if (!times.empty()) {
