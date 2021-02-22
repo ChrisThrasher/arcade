@@ -77,13 +77,20 @@ int main()
         std::sort(sorted_times.begin(), sorted_times.end());
         for (size_t i = 0; i < times.size(); ++i) {
             tui::Print(row, 0, std::to_string(i + 1));
-            tui::Print(row, 5, FormatDuration(times[i]));
+
             auto color = 0;
-            if (i == 0)
+            if (times[i] == sorted_times.front())
                 color = COLOR_PAIR(1);
-            else if (i == times.size() - 1)
+            else if (times[i] == sorted_times.back())
                 color = COLOR_PAIR(2);
-            tui::Print(row++, 17, FormatDuration(sorted_times[i]), color);
+            tui::Print(row, 5, FormatDuration(times[i]), color);
+
+            auto sorted_color = 0;
+            if (i == 0)
+                sorted_color = COLOR_PAIR(1);
+            else if (i == times.size() - 1)
+                sorted_color = COLOR_PAIR(2);
+            tui::Print(row++, 17, FormatDuration(sorted_times[i]), sorted_color);
         }
         if (!times.empty()) {
             ++row;
