@@ -57,10 +57,12 @@ int main()
         case Board::State::IN_PROGRESS:
             break;
         case Board::State::SUCCESS:
+            Draw(board);
             tui::Print(14, 0, "You win!");
             tui::WaitFor('q');
             return 0;
         case Board::State::FAILURE:
+            Draw(board);
             tui::Print(14, 0, "Game over.");
             tui::WaitFor('q');
             return -1;
