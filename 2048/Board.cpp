@@ -95,30 +95,26 @@ auto Board::GameState() const -> Board::State
 
     auto board = m_board;
     auto score = m_score;
-    auto board_changed = false;
     for (size_t column = 0; column < 4; ++column) {
         ProcessTileset(board[0][column], board[1][column], board[2][column], board[3][column], score);
         if (board != m_board)
-            board_changed = true;
+            return State::IN_PROGRESS;
     }
     for (size_t column = 0; column < 4; ++column) {
         ProcessTileset(board[3][column], board[2][column], board[1][column], board[0][column], score);
         if (board != m_board)
-            board_changed = true;
+            return State::IN_PROGRESS;
     }
     for (size_t row = 0; row < 4; ++row) {
         ProcessTileset(board[row][0], board[row][1], board[row][2], board[row][3], score);
         if (board != m_board)
-            board_changed = true;
+            return State::IN_PROGRESS;
     }
     for (size_t row = 0; row < 4; ++row) {
         ProcessTileset(board[row][3], board[row][2], board[row][1], board[row][0], score);
         if (board != m_board)
-            board_changed = true;
+            return State::IN_PROGRESS;
     }
 
-    if (not board_changed)
-        return State::FAILURE;
-
-    return State::IN_PROGRESS;
+    return State::FAILURE;
 }
