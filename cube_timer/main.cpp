@@ -50,6 +50,7 @@ int main()
                 times.push_back(timer.Query());
             timer.Stop();
             timer.Reset();
+            scramble = GenerateScramble();
             break;
         case 'd':
             if (!times.empty())
