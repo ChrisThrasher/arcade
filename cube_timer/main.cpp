@@ -28,7 +28,7 @@ auto FormatDuration(std::chrono::nanoseconds duration)
 int main()
 {
     tui::Init();
-    timeout(50);
+    timeout(10);
 
     start_color();
     use_default_colors();
