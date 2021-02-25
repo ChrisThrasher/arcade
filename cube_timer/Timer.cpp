@@ -1,15 +1,17 @@
 #include "Timer.h"
 
+auto Now() { return std::chrono::system_clock::now(); }
+
 void Timer::Update()
 {
-    auto now = std::chrono::system_clock::now();
+    auto now = Now();
     m_duration += now - m_start;
     m_start = now;
 }
 
 void Timer::Start()
 {
-    m_start = std::chrono::system_clock::now();
+    m_start = Now();
     m_running = true;
 }
 
@@ -29,14 +31,14 @@ void Timer::StartStop()
 
 void Timer::Reset()
 {
-    m_start = std::chrono::system_clock::now();
+    m_start = Now();
     m_duration = std::chrono::nanoseconds(0);
 }
 
 auto Timer::Query() -> std::chrono::nanoseconds
 {
     if (m_running)
-        Update();
-
-    return m_duration;
+        return Now() - m_start + m_duration;
+    else
+        return m_duration;
 }
