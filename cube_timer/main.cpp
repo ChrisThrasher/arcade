@@ -78,9 +78,9 @@ int main()
 
         ++row;
         for (size_t i = 0; i < scramble.size(); ++i) {
-            constexpr auto midpoint = scramble.size() / 2 - 1;
+            constexpr auto midpoint = scramble.size() / 2;
             tui::Print(row, (i % midpoint) * 3, scramble[i]);
-            if (i == midpoint)
+            if (i == midpoint - 1)
                 ++row;
         }
         ++row;
