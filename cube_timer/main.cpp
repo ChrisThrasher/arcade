@@ -1,3 +1,4 @@
+#include "Scramble.h"
 #include "Timer.h"
 
 #include <Tui/Tui.h>
@@ -37,6 +38,7 @@ int main()
     constexpr auto RED = COLOR_PAIR(2);
 
     std::vector<std::chrono::nanoseconds> times;
+    auto scramble = GenerateScramble();
     Timer timer;
     for (;;) {
         switch (getch()) {
@@ -56,6 +58,9 @@ int main()
         case 'r':
             timer.Reset();
             break;
+        case 'g':
+            scramble = GenerateScramble();
+            break;
         case 'q':
             return 0;
         }
@@ -63,22 +68,32 @@ int main()
         clear();
 
         auto row = 0;
-        tui::Print(row++, 0, "========Controls========");
+        tui::Print(row++, 0, "=========Controls=========");
         tui::Print(row++, 0, "SPACE: Start/stop timer");
         tui::Print(row++, 0, "s: Save time");
-        tui::Print(row++, 0, "d: Delete last time");
-        tui::Print(row++, 0, "r: Reset");
+        tui::Print(row++, 0, "d: Delete time");
+        tui::Print(row++, 0, "r: Reset time");
+        tui::Print(row++, 0, "g: Generate scramble");
         tui::Print(row++, 0, "q: Quit");
 
         ++row;
-        tui::Print(row++, 9, FormatDuration(timer.Query()));
+        for (size_t i = 0; i < scramble.size(); ++i) {
+            constexpr auto midpoint = scramble.size() / 2 - 1;
+            tui::Print(row, (i % midpoint) * 3, scramble[i]);
+            if (i == midpoint)
+                ++row;
+        }
+        ++row;
 
         ++row;
-        tui::Print(row++, 0, "==========Times=========");
+        tui::Print(row++, 10, FormatDuration(timer.Query()));
+
+        ++row;
+        tui::Print(row++, 0, "===========Times==========");
         auto sorted_times = times;
         std::sort(sorted_times.begin(), sorted_times.end());
         for (size_t i = 0; i < times.size(); ++i) {
-            tui::Print(row, 0, std::to_string(i + 1));
+            tui::Print(row, 1, std::to_string(i + 1));
 
             int color = 0;
             if (times.size() <= 1)
@@ -87,7 +102,7 @@ int main()
                 color = GREEN;
             else if (times[i] == sorted_times.back())
                 color = RED;
-            tui::Print(row, 5, FormatDuration(times[i]), color);
+            tui::Print(row, 6, FormatDuration(times[i]), color);
 
             int sorted_color = 0;
             if (sorted_times.size() <= 1)
@@ -96,7 +111,7 @@ int main()
                 sorted_color = GREEN;
             else if (i == times.size() - 1)
                 sorted_color = RED;
-            tui::Print(row++, 17, FormatDuration(sorted_times[i]), sorted_color);
+            tui::Print(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
         }
         if (!times.empty()) {
             ++row;
