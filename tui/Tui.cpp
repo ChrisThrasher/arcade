@@ -10,6 +10,10 @@ void Init()
     clear();
     keypad(stdscr, TRUE);
     curs_set(0);
+
+    start_color();
+    use_default_colors();
+
     std::atexit([]() { endwin(); });
 }
 
