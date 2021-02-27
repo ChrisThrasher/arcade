@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <iomanip>
+#include <map>
 #include <sstream>
 
 void Draw(const Board& board);
@@ -11,18 +12,6 @@ void Draw(const Board& board);
 int main()
 {
     tui::Init();
-
-    init_pair(1, -1, -1);
-    init_pair(2, -1, -1);
-    init_pair(3, COLOR_YELLOW, -1);
-    init_pair(4, COLOR_RED, -1);
-    init_pair(5, COLOR_MAGENTA, -1);
-    init_pair(6, COLOR_CYAN, -1);
-    init_pair(7, COLOR_BLUE, -1);
-    init_pair(8, COLOR_GREEN, -1);
-    init_pair(9, COLOR_GREEN, -1);
-    init_pair(10, COLOR_GREEN, -1);
-    init_pair(11, COLOR_GREEN, -1);
 
     Board board;
 
@@ -72,6 +61,11 @@ void Draw(const Board& board)
 {
     const auto& data = board.Data();
 
+    static const std::map<size_t, int> colors
+        = { { 0, tui::white },    { 2, tui::white }, { 4, tui::yellow },     { 8, tui::red },
+            { 16, tui::magenta }, { 32, tui::blue }, { 64, tui::cyan },      { 128, tui::green },
+            { 256, tui::yellow }, { 512, tui::red }, { 1024, tui::magenta }, { 2048, tui::blue } };
+
     size_t row = 0;
     for (; row < data.size(); ++row) {
         tui::Draw(row * 2, 0, "---------------------\n");
@@ -85,7 +79,7 @@ void Draw(const Board& board)
                 out << cell;
             else
                 out << ' ';
-            tui::Draw(row * 2 + 1, col * 5 + 1, out.str(), COLOR_PAIR(static_cast<int>(std::log2(cell))));
+            tui::Draw(row * 2 + 1, col * 5 + 1, out.str(), colors.at(cell));
         }
         tui::Draw(row * 2 + 1, col * 5, "|");
     }
