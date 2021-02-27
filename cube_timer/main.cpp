@@ -25,6 +25,18 @@ auto FormatDuration(std::chrono::nanoseconds duration)
     return ss.str();
 }
 
+void DrawHeader()
+{
+    auto row = 0;
+    tui::Draw(row++, 0, "=========Controls=========");
+    tui::Draw(row++, 0, "SPACE: Start/stop timer");
+    tui::Draw(row++, 0, "s: Save time");
+    tui::Draw(row++, 0, "d: Delete time");
+    tui::Draw(row++, 0, "r: Reset time");
+    tui::Draw(row++, 0, "g: Generate scramble");
+    tui::Draw(row++, 0, "q: Quit");
+}
+
 int main()
 {
     tui::Init();
@@ -36,6 +48,8 @@ int main()
     init_pair(2, COLOR_RED, -1);
     constexpr auto GREEN = COLOR_PAIR(1);
     constexpr auto RED = COLOR_PAIR(2);
+
+    DrawHeader();
 
     std::vector<std::chrono::nanoseconds> times;
     auto scramble = GenerateScramble();
@@ -66,18 +80,11 @@ int main()
             return 0;
         }
 
-        clear();
+        auto row = 8;
+        move(row, 0);
+        clrtobot();
 
-        auto row = 0;
-        tui::Draw(row++, 0, "=========Controls=========");
-        tui::Draw(row++, 0, "SPACE: Start/stop timer");
-        tui::Draw(row++, 0, "s: Save time");
-        tui::Draw(row++, 0, "d: Delete time");
-        tui::Draw(row++, 0, "r: Reset time");
-        tui::Draw(row++, 0, "g: Generate scramble");
-        tui::Draw(row++, 0, "q: Quit");
-
-        ++row;
+        // Draw scramble
         for (size_t i = 0; i < scramble.size(); ++i) {
             constexpr auto midpoint = scramble.size() / 2;
             tui::Draw(row, (i % midpoint) * 3, scramble[i]);
@@ -86,9 +93,11 @@ int main()
         }
         ++row;
 
+        // Draw timer
         ++row;
         tui::Draw(row++, 10, FormatDuration(timer.Query()));
 
+        // Draw times
         ++row;
         tui::Draw(row++, 0, "===========Times==========");
         auto sorted_times = times;
