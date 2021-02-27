@@ -7,8 +7,6 @@ class Timer {
     std::chrono::nanoseconds m_duration {};
     bool m_running { false };
 
-    void Update();
-
 public:
     void Start();
     void Stop();

@@ -2,13 +2,6 @@
 
 auto Now() { return std::chrono::system_clock::now(); }
 
-void Timer::Update()
-{
-    auto now = Now();
-    m_duration += now - m_start;
-    m_start = now;
-}
-
 void Timer::Start()
 {
     m_start = Now();
@@ -17,7 +10,9 @@ void Timer::Start()
 
 void Timer::Stop()
 {
-    Update();
+    auto now = Now();
+    m_duration += now - m_start;
+    m_start = now;
     m_running = false;
 }
 
