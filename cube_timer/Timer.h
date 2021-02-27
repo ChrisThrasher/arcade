@@ -10,7 +10,7 @@ class Timer {
 public:
     void Start();
     void Stop();
-    void StartStop();
+    void Toggle();
     void Reset();
     auto Query() -> std::chrono::nanoseconds;
 };

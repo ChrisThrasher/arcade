@@ -43,7 +43,7 @@ int main()
     for (;;) {
         switch (getch()) {
         case ' ':
-            timer.StartStop();
+            timer.Toggle();
             break;
         case 's':
             if (timer.Query() != std::chrono::nanoseconds(0))

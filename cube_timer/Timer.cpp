@@ -16,7 +16,7 @@ void Timer::Stop()
     m_running = false;
 }
 
-void Timer::StartStop()
+void Timer::Toggle()
 {
     if (m_running)
         Stop();
