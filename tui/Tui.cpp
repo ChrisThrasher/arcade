@@ -13,7 +13,7 @@ void Init()
     std::atexit([]() { endwin(); });
 }
 
-void Print(int row, int col, const std::string& text, int color)
+void Draw(int row, int col, const std::string& text, int color)
 {
     if (color == 0) {
         mvaddstr(row, col, text.c_str());

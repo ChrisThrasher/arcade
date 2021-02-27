@@ -58,12 +58,12 @@ int main()
             break;
         case Board::State::SUCCESS:
             Draw(board);
-            tui::Print(14, 0, "You win!");
+            tui::Draw(14, 0, "You win!");
             tui::WaitFor('q');
             return 0;
         case Board::State::FAILURE:
             Draw(board);
-            tui::Print(14, 0, "Game over.");
+            tui::Draw(14, 0, "Game over.");
             tui::WaitFor('q');
             return -1;
         }
@@ -76,10 +76,10 @@ void Draw(const Board& board)
 
     size_t row = 0;
     for (; row < data.size(); ++row) {
-        tui::Print(row * 2, 0, "---------------------\n");
+        tui::Draw(row * 2, 0, "---------------------\n");
         size_t col = 0;
         for (; col < data[row].size(); ++col) {
-            tui::Print(row * 2 + 1, col * 5, "|");
+            tui::Draw(row * 2 + 1, col * 5, "|");
             std::stringstream out;
             out << std::setfill(' ') << std::right << std::setw(4);
             auto& cell = data[row][col];
@@ -87,13 +87,13 @@ void Draw(const Board& board)
                 out << cell;
             else
                 out << ' ';
-            tui::Print(row * 2 + 1, col * 5 + 1, out.str(), COLOR_PAIR(static_cast<int>(std::log2(cell))));
+            tui::Draw(row * 2 + 1, col * 5 + 1, out.str(), COLOR_PAIR(static_cast<int>(std::log2(cell))));
         }
-        tui::Print(row * 2 + 1, col * 5, "|");
+        tui::Draw(row * 2 + 1, col * 5, "|");
     }
-    tui::Print(row * 2, 0, "---------------------\n");
+    tui::Draw(row * 2, 0, "---------------------\n");
 
-    tui::Print(row * 2 + 1, 0, "Score: " + std::to_string(board.Score()));
-    tui::Print(row * 2 + 3, 0, "q: Quit");
-    tui::Print(row * 2 + 4, 0, "n: New game");
+    tui::Draw(row * 2 + 1, 0, "Score: " + std::to_string(board.Score()));
+    tui::Draw(row * 2 + 3, 0, "q: Quit");
+    tui::Draw(row * 2 + 4, 0, "n: New game");
 }

@@ -15,7 +15,7 @@ Controller::Controller()
 
 Controller::~Controller()
 {
-    tui::Print(22, 0, "Game over.");
+    tui::Draw(22, 0, "Game over.");
     tui::WaitFor('q');
 }
 
@@ -64,19 +64,19 @@ void Controller::Draw()
         for (size_t col = 0; col < board[row].size(); ++col) {
             switch (board[row][col]) {
             case Game::Tile::EMPTY:
-                tui::Print(row, col * 2, ".");
+                tui::Draw(row, col * 2, ".");
                 break;
             case Game::Tile::SNAKE:
-                tui::Print(row, col * 2, "0", COLOR_PAIR(1));
+                tui::Draw(row, col * 2, "0", COLOR_PAIR(1));
                 break;
             case Game::Tile::FRUIT:
-                tui::Print(row, col * 2, "X", COLOR_PAIR(2));
+                tui::Draw(row, col * 2, "X", COLOR_PAIR(2));
                 break;
             }
         }
     }
 
-    tui::Print(++row, 0, "Score: " + std::to_string(m_game.Score()));
+    tui::Draw(++row, 0, "Score: " + std::to_string(m_game.Score()));
 
     refresh();
 }

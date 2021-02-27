@@ -69,32 +69,32 @@ int main()
         clear();
 
         auto row = 0;
-        tui::Print(row++, 0, "=========Controls=========");
-        tui::Print(row++, 0, "SPACE: Start/stop timer");
-        tui::Print(row++, 0, "s: Save time");
-        tui::Print(row++, 0, "d: Delete time");
-        tui::Print(row++, 0, "r: Reset time");
-        tui::Print(row++, 0, "g: Generate scramble");
-        tui::Print(row++, 0, "q: Quit");
+        tui::Draw(row++, 0, "=========Controls=========");
+        tui::Draw(row++, 0, "SPACE: Start/stop timer");
+        tui::Draw(row++, 0, "s: Save time");
+        tui::Draw(row++, 0, "d: Delete time");
+        tui::Draw(row++, 0, "r: Reset time");
+        tui::Draw(row++, 0, "g: Generate scramble");
+        tui::Draw(row++, 0, "q: Quit");
 
         ++row;
         for (size_t i = 0; i < scramble.size(); ++i) {
             constexpr auto midpoint = scramble.size() / 2;
-            tui::Print(row, (i % midpoint) * 3, scramble[i]);
+            tui::Draw(row, (i % midpoint) * 3, scramble[i]);
             if (i == midpoint - 1)
                 ++row;
         }
         ++row;
 
         ++row;
-        tui::Print(row++, 10, FormatDuration(timer.Query()));
+        tui::Draw(row++, 10, FormatDuration(timer.Query()));
 
         ++row;
-        tui::Print(row++, 0, "===========Times==========");
+        tui::Draw(row++, 0, "===========Times==========");
         auto sorted_times = times;
         std::sort(sorted_times.begin(), sorted_times.end());
         for (size_t i = 0; i < times.size(); ++i) {
-            tui::Print(row, 1, std::to_string(i + 1));
+            tui::Draw(row, 1, std::to_string(i + 1));
 
             int color = 0;
             if (times.size() <= 1)
@@ -103,7 +103,7 @@ int main()
                 color = GREEN;
             else if (times[i] == sorted_times.back())
                 color = RED;
-            tui::Print(row, 6, FormatDuration(times[i]), color);
+            tui::Draw(row, 6, FormatDuration(times[i]), color);
 
             int sorted_color = 0;
             if (sorted_times.size() <= 1)
@@ -112,18 +112,18 @@ int main()
                 sorted_color = GREEN;
             else if (i == times.size() - 1)
                 sorted_color = RED;
-            tui::Print(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
+            tui::Draw(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
         }
         if (!times.empty()) {
             ++row;
             auto average = std::accumulate(times.begin(), times.end(), std::chrono::nanoseconds(0)) / times.size();
-            tui::Print(row++, 0, "Average: " + FormatDuration(average));
+            tui::Draw(row++, 0, "Average: " + FormatDuration(average));
         }
         if (sorted_times.size() >= 3) {
             auto mid_avg
                 = std::accumulate(sorted_times.begin() + 1, sorted_times.end() - 1, std::chrono::nanoseconds(0))
                 / (sorted_times.size() - 2);
-            tui::Print(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
+            tui::Draw(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
         }
 
         refresh();
