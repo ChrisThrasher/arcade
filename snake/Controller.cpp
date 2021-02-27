@@ -6,9 +6,6 @@ Controller::Controller()
 {
     tui::Init();
     timeout(50);
-
-    init_pair(2, COLOR_RED, -1);
-    init_pair(1, COLOR_GREEN, -1);
 }
 
 Controller::~Controller()
@@ -65,10 +62,10 @@ void Controller::Draw()
                 tui::Draw(row, col * 2, ".");
                 break;
             case Game::Tile::SNAKE:
-                tui::Draw(row, col * 2, "0", COLOR_PAIR(1));
+                tui::Draw(row, col * 2, "0", tui::green);
                 break;
             case Game::Tile::FRUIT:
-                tui::Draw(row, col * 2, "X", COLOR_PAIR(2));
+                tui::Draw(row, col * 2, "X", tui::red);
                 break;
             }
         }

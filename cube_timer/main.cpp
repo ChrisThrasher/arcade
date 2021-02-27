@@ -42,11 +42,6 @@ int main()
     tui::Init();
     timeout(10);
 
-    init_pair(1, COLOR_GREEN, -1);
-    init_pair(2, COLOR_RED, -1);
-    constexpr auto GREEN = COLOR_PAIR(1);
-    constexpr auto RED = COLOR_PAIR(2);
-
     DrawHeader();
 
     std::vector<std::chrono::nanoseconds> times;
@@ -108,18 +103,18 @@ int main()
             if (times.size() <= 1)
                 color = 0;
             else if (times[i] == sorted_times.front())
-                color = GREEN;
+                color = tui::green;
             else if (times[i] == sorted_times.back())
-                color = RED;
+                color = tui::red;
             tui::Draw(row, 6, FormatDuration(times[i]), color);
 
             int sorted_color = 0;
             if (sorted_times.size() <= 1)
                 sorted_color = 0;
             else if (i == 0)
-                sorted_color = GREEN;
+                sorted_color = tui::green;
             else if (i == times.size() - 1)
-                sorted_color = RED;
+                sorted_color = tui::red;
             tui::Draw(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
         }
         if (!times.empty()) {

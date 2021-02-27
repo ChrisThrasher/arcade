@@ -16,10 +16,10 @@ void Draw(ConnectFour game, int column)
                 tui::Draw(6 - row, col * 2, "_");
                 break;
             case Tile::RED:
-                tui::Draw(6 - row, col * 2, "O", COLOR_PAIR(1));
+                tui::Draw(6 - row, col * 2, "O", tui::red);
                 break;
             case Tile::YEL:
-                tui::Draw(6 - row, col * 2, "O", COLOR_PAIR(2));
+                tui::Draw(6 - row, col * 2, "O", tui::yellow);
                 break;
             }
         }
@@ -29,10 +29,10 @@ void Draw(ConnectFour game, int column)
     case Tile::EMPTY:
         break;
     case Tile::RED:
-        tui::Draw(7, column * 2, "^", COLOR_PAIR(1));
+        tui::Draw(7, column * 2, "^", tui::red);
         break;
     case Tile::YEL:
-        tui::Draw(7, column * 2, "^", COLOR_PAIR(2));
+        tui::Draw(7, column * 2, "^", tui::yellow);
         break;
     }
 
@@ -44,9 +44,6 @@ void Draw(ConnectFour game, int column)
 int main()
 {
     tui::Init();
-
-    init_pair(1, COLOR_RED, -1);
-    init_pair(2, COLOR_YELLOW, -1);
 
     ConnectFour game;
     while (game.Running()) {
