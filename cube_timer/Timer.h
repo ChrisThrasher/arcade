@@ -12,5 +12,5 @@ public:
     void Stop();
     void Toggle();
     void Reset();
-    auto Query() -> std::chrono::nanoseconds;
+    auto Query() const -> std::chrono::nanoseconds;
 };

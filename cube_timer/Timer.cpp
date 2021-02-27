@@ -30,7 +30,7 @@ void Timer::Reset()
     m_duration = std::chrono::nanoseconds(0);
 }
 
-auto Timer::Query() -> std::chrono::nanoseconds
+auto Timer::Query() const -> std::chrono::nanoseconds
 {
     if (m_running)
         return Now() - m_start + m_duration;
