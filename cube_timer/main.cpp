@@ -60,11 +60,12 @@ int main()
             timer.Toggle();
             break;
         case 's':
-            if (timer.Query() != std::chrono::nanoseconds(0))
+            if (timer.Query() != std::chrono::nanoseconds(0)) {
                 times.push_back(timer.Query());
-            timer.Stop();
-            timer.Reset();
-            scramble = GenerateScramble();
+                timer.Stop();
+                timer.Reset();
+                scramble = GenerateScramble();
+            }
             break;
         case 'd':
             if (!times.empty())
