@@ -38,6 +38,17 @@ void DrawHeader()
     tui::Draw(row++, 0, "q: Quit");
 }
 
+void DrawScramble(int& row, const Scramble& scramble)
+{
+    const auto midpoint = scramble.size() / 2;
+    for (size_t i = 0; i < scramble.size(); ++i) {
+        tui::Draw(row, (i % midpoint) * 3, scramble[i]);
+        if (i == midpoint - 1)
+            ++row;
+    }
+    ++row;
+}
+
 void DrawTimer(int& row, Timer& timer, bool& inspecting)
 {
     using namespace std::chrono_literals;
@@ -59,6 +70,45 @@ void DrawTimer(int& row, Timer& timer, bool& inspecting)
     }
 
     tui::Draw(row++, 10, FormatDuration(time), color);
+}
+
+void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& times)
+{
+    ++row;
+    tui::Draw(row++, 0, "===========Times==========");
+    auto sorted_times = times;
+    std::sort(sorted_times.begin(), sorted_times.end());
+    for (size_t i = 0; i < times.size(); ++i) {
+        tui::Draw(row, 1, std::to_string(i + 1));
+
+        int color = 0;
+        if (times.size() <= 1)
+            color = 0;
+        else if (times[i] == sorted_times.front())
+            color = tui::green;
+        else if (times[i] == sorted_times.back())
+            color = tui::red;
+        tui::Draw(row, 6, FormatDuration(times[i]), color);
+
+        int sorted_color = 0;
+        if (sorted_times.size() <= 1)
+            sorted_color = 0;
+        else if (i == 0)
+            sorted_color = tui::green;
+        else if (i == times.size() - 1)
+            sorted_color = tui::red;
+        tui::Draw(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
+    }
+    if (!times.empty()) {
+        ++row;
+        auto average = std::accumulate(times.begin(), times.end(), std::chrono::nanoseconds(0)) / times.size();
+        tui::Draw(row++, 0, "Average: " + FormatDuration(average));
+    }
+    if (sorted_times.size() >= 3) {
+        auto mid_avg = std::accumulate(sorted_times.begin() + 1, sorted_times.end() - 1, std::chrono::nanoseconds(0))
+            / (sorted_times.size() - 2);
+        tui::Draw(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
+    }
 }
 
 int main()
@@ -120,54 +170,9 @@ int main()
         move(row, 0);
         clrtobot();
 
-        // Draw scramble
-        for (size_t i = 0; i < scramble.size(); ++i) {
-            constexpr auto midpoint = scramble.size() / 2;
-            tui::Draw(row, (i % midpoint) * 3, scramble[i]);
-            if (i == midpoint - 1)
-                ++row;
-        }
-        ++row;
-
+        DrawScramble(row, scramble);
         DrawTimer(row, timer, inspecting);
-
-        // Draw times
-        ++row;
-        tui::Draw(row++, 0, "===========Times==========");
-        auto sorted_times = times;
-        std::sort(sorted_times.begin(), sorted_times.end());
-        for (size_t i = 0; i < times.size(); ++i) {
-            tui::Draw(row, 1, std::to_string(i + 1));
-
-            int color = 0;
-            if (times.size() <= 1)
-                color = 0;
-            else if (times[i] == sorted_times.front())
-                color = tui::green;
-            else if (times[i] == sorted_times.back())
-                color = tui::red;
-            tui::Draw(row, 6, FormatDuration(times[i]), color);
-
-            int sorted_color = 0;
-            if (sorted_times.size() <= 1)
-                sorted_color = 0;
-            else if (i == 0)
-                sorted_color = tui::green;
-            else if (i == times.size() - 1)
-                sorted_color = tui::red;
-            tui::Draw(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
-        }
-        if (!times.empty()) {
-            ++row;
-            auto average = std::accumulate(times.begin(), times.end(), std::chrono::nanoseconds(0)) / times.size();
-            tui::Draw(row++, 0, "Average: " + FormatDuration(average));
-        }
-        if (sorted_times.size() >= 3) {
-            auto mid_avg
-                = std::accumulate(sorted_times.begin() + 1, sorted_times.end() - 1, std::chrono::nanoseconds(0))
-                / (sorted_times.size() - 2);
-            tui::Draw(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
-        }
+        DrawTimes(row, times);
 
         refresh();
     }
