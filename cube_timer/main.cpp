@@ -32,9 +32,33 @@ void DrawHeader()
     tui::Draw(row++, 0, "SPACE: Start/stop timer");
     tui::Draw(row++, 0, "s: Save time");
     tui::Draw(row++, 0, "d: Delete time");
-    tui::Draw(row++, 0, "r: Reset time");
+    tui::Draw(row++, 0, "r: Reset timer");
+    tui::Draw(row++, 0, "i: Start inspection");
     tui::Draw(row++, 0, "g: Generate scramble");
     tui::Draw(row++, 0, "q: Quit");
+}
+
+void DrawTimer(int& row, Timer& timer, bool& inspecting)
+{
+    using namespace std::chrono_literals;
+
+    ++row;
+    auto time = timer.Query();
+    auto color = 0;
+    if (inspecting) {
+        if (time > 15s) {
+            timer.Reset();
+            inspecting = false;
+        } else {
+            time = 15s - time;
+            if (time < 8s)
+                color = tui::red;
+            else
+                color = tui::yellow;
+        }
+    }
+
+    tui::Draw(row++, 10, FormatDuration(time), color);
 }
 
 int main()
@@ -47,13 +71,21 @@ int main()
     std::vector<std::chrono::nanoseconds> times;
     auto scramble = GenerateScramble();
     Timer timer;
+    bool inspecting = false;
     for (;;) {
         switch (getch()) {
         case ' ':
-            timer.Toggle();
+            if (inspecting) {
+                timer.Stop();
+                timer.Reset();
+                timer.Start();
+                inspecting = false;
+            } else {
+                timer.Toggle();
+            }
             break;
         case 's':
-            if (timer.Query() != std::chrono::nanoseconds(0)) {
+            if (timer.Query() != std::chrono::nanoseconds(0) && !inspecting) {
                 times.push_back(timer.Query());
                 timer.Stop();
                 timer.Reset();
@@ -65,7 +97,17 @@ int main()
                 times.pop_back();
             break;
         case 'r':
+            timer.Stop();
             timer.Reset();
+            inspecting = false;
+            break;
+        case 'i':
+            if (!inspecting && !timer.Running()) {
+                timer.Stop();
+                timer.Reset();
+                timer.Start();
+                inspecting = true;
+            }
             break;
         case 'g':
             scramble = GenerateScramble();
@@ -74,7 +116,7 @@ int main()
             return 0;
         }
 
-        auto row = 8;
+        auto row = 9;
         move(row, 0);
         clrtobot();
 
@@ -87,9 +129,7 @@ int main()
         }
         ++row;
 
-        // Draw timer
-        ++row;
-        tui::Draw(row++, 10, FormatDuration(timer.Query()));
+        DrawTimer(row, timer, inspecting);
 
         // Draw times
         ++row;

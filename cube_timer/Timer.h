@@ -13,4 +13,5 @@ public:
     void Toggle();
     void Reset();
     auto Query() const -> std::chrono::nanoseconds;
+    auto Running() const { return m_running; }
 };
