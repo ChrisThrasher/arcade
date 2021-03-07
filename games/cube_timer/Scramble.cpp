@@ -1,5 +1,6 @@
 #include "Scramble.h"
 
+#include <array>
 #include <random>
 
 auto GenerateMove() -> std::string
@@ -14,17 +15,32 @@ auto GenerateMove() -> std::string
     return moves[s_dist(s_rng)];
 }
 
-auto GenerateScramble() -> Scramble
+auto GenerateScramble(const Puzzle puzzle) -> Scramble
 {
+    size_t length = 0;
+    switch (puzzle) {
+    case Puzzle::Cube2:
+        length = 9;
+        break;
+    case Puzzle::Cube3:
+        length = 18;
+        break;
+    case Puzzle::Cube4:
+        // TODO Implement 4x4 scrambling
+        return {};
+    case Puzzle::Cube5:
+        // TODO Implement 5x5 scrambling
+        return {};
+    }
 
     // This is a bit ugly
     auto scramble = Scramble {};
-    scramble[0] = GenerateMove();
-    scramble[1] = GenerateMove();
+    scramble.push_back(GenerateMove());
+    scramble.push_back(GenerateMove());
     while (scramble[1][0] == scramble[0][0])
         scramble[1] = GenerateMove();
-    for (size_t i = 2; i < scramble.size(); ++i) {
-        scramble[i] = GenerateMove();
+    for (size_t i = 2; i < length; ++i) {
+        scramble.push_back(GenerateMove());
         while (scramble[i][0] == scramble[i - 1][0] || scramble[i][0] == scramble[i - 2][0])
             scramble[i] = GenerateMove();
     }

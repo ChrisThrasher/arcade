@@ -1,7 +1,8 @@
 #pragma once
 
-#include <array>
 #include <string>
+#include <vector>
 
-using Scramble = std::array<std::string, 18>;
-auto GenerateScramble() -> Scramble;
+enum class Puzzle { Cube2, Cube3, Cube4, Cube5 };
+using Scramble = std::vector<std::string>;
+auto GenerateScramble(Puzzle) -> Scramble;
