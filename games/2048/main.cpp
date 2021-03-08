@@ -74,7 +74,7 @@ void Draw(const Board& board)
             tui::Draw(row * 2 + 1, col * 5, "|");
             std::stringstream out;
             out << std::setfill(' ') << std::right << std::setw(4);
-            auto& cell = data[row][col];
+            const auto& cell = data[row][col];
             if (cell != 0)
                 out << cell;
             else

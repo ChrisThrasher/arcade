@@ -34,6 +34,5 @@ auto Timer::Query() const -> std::chrono::nanoseconds
 {
     if (m_running)
         return Now() - m_start + m_duration;
-    else
-        return m_duration;
+    return m_duration;
 }

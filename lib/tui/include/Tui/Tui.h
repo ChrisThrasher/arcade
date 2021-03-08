@@ -16,7 +16,18 @@ extern int blue;
 extern int magenta;
 
 void Init();
-void Draw(int row, int col, const std::string& text, int color = 0);
 void WaitFor(char c);
+
+template <typename T, typename U>
+void Draw(T row, U col, const std::string& text, int color = 0)
+{
+    if (color == 0) {
+        mvaddstr(static_cast<int>(row), static_cast<int>(col), text.c_str());
+    } else {
+        attron(color);
+        mvaddstr(static_cast<int>(row), static_cast<int>(col), text.c_str());
+        attroff(color);
+    }
+}
 
 }

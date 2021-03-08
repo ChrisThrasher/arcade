@@ -4,8 +4,8 @@
 #include <optional>
 #include <random>
 
-auto GenerateMove(const std::optional<std::string> prev1 = std::nullopt,
-                  const std::optional<std::string> prev2 = std::nullopt) -> std::string
+auto GenerateMove(const std::optional<std::string>& prev1 = std::nullopt,
+                  const std::optional<std::string>& prev2 = std::nullopt) -> std::string
 {
     constexpr std::array moves
         = { "U", "U'", "U2", "F", "F'", "F2", "L", "L'", "L2", "R", "R'", "R2", "B", "B'", "B2", "D", "D'", "D2" };

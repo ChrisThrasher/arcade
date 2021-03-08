@@ -20,8 +20,6 @@ void Controller::Cycle()
     Draw();
 }
 
-bool Controller::Running() { return m_running; }
-
 void Controller::GetInput()
 {
     switch (getch()) {

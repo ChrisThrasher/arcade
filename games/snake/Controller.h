@@ -14,5 +14,5 @@ public:
     ~Controller();
 
     void Cycle();
-    bool Running();
+    bool Running() const { return m_running; }
 };
