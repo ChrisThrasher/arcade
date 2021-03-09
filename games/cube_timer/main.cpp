@@ -145,11 +145,11 @@ int main()
 
     DrawHeader();
 
-    std::map<Puzzle, std::vector<std::chrono::nanoseconds>> times;
-    Puzzle puzzle = Puzzle::Cube3;
+    auto times = std::map<Puzzle, std::vector<std::chrono::nanoseconds>>();
+    auto puzzle = Puzzle::Cube3;
     auto scramble = GenerateScramble(puzzle);
-    Timer timer;
-    bool inspecting = false;
+    auto timer = Timer();
+    auto inspecting = false;
     for (;;) {
         switch (getch()) {
         case ' ':
