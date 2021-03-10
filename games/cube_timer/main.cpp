@@ -12,7 +12,7 @@
 #include <thread>
 #include <vector>
 
-auto FormatDuration(std::chrono::nanoseconds duration)
+static auto FormatDuration(std::chrono::nanoseconds duration)
 {
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration -= minutes);
@@ -26,10 +26,10 @@ auto FormatDuration(std::chrono::nanoseconds duration)
     return ss.str();
 }
 
-void DrawHeader()
+static void DrawHeader()
 {
     auto row = 0;
-    tui::Draw(row++, 0, "=========Controls=========");
+    tui::Draw(row++, 0, "=========Controls==========");
     tui::Draw(row++, 0, "SPACE: Start/stop timer");
     tui::Draw(row++, 0, "s: Save time");
     tui::Draw(row++, 0, "d: Delete time");
@@ -39,7 +39,7 @@ void DrawHeader()
     tui::Draw(row++, 0, "q: Quit");
 }
 
-void DrawPuzzleName(int& row, const Puzzle puzzle)
+static void DrawPuzzleName(int& row, const Puzzle puzzle)
 {
     std::string puzzle_name;
     switch (puzzle) {
@@ -59,14 +59,15 @@ void DrawPuzzleName(int& row, const Puzzle puzzle)
     tui::Draw(row++, 12, puzzle_name);
 }
 
-void DrawScramble(int& row, const Scramble& scramble)
+static void DrawScramble(int& row, const Scramble& scramble)
 {
     if (scramble.empty())
         return;
 
-    constexpr auto break_point = 9;
+    constexpr auto break_point = 7;
+    constexpr auto width = 4;
     for (size_t i = 0; i < scramble.size(); ++i) {
-        tui::Draw(row, (i % break_point) * 3, scramble[i]);
+        tui::Draw(row, (i % break_point) * width, scramble[i]);
 
         const bool end_of_row = (i + 1) % break_point == 0;
         const bool not_last_element = i + 1 < scramble.size();
@@ -76,7 +77,7 @@ void DrawScramble(int& row, const Scramble& scramble)
     ++row;
 }
 
-void DrawTimer(int& row, Timer& timer, bool& inspecting)
+static void DrawTimer(int& row, Timer& timer, bool& inspecting)
 {
     using namespace std::chrono_literals;
 
@@ -99,10 +100,10 @@ void DrawTimer(int& row, Timer& timer, bool& inspecting)
     tui::Draw(row++, 10, FormatDuration(time), color);
 }
 
-void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& times)
+static void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& times)
 {
     ++row;
-    tui::Draw(row++, 0, "===========Times==========");
+    tui::Draw(row++, 0, "===========Times===========");
     auto sorted_times = times;
     std::sort(sorted_times.begin(), sorted_times.end());
     for (size_t i = 0; i < times.size(); ++i) {
@@ -210,7 +211,7 @@ int main()
             return 0;
         }
 
-        auto row = 9;
+        auto row = 8;
         move(row, 0);
         clrtobot();
 
