@@ -26,9 +26,8 @@ static auto FormatDuration(std::chrono::nanoseconds duration)
     return ss.str();
 }
 
-static void DrawHeader()
+static void DrawHeader(int& row)
 {
-    auto row = 0;
     tui::Draw(row++, 0, "=========Controls==========");
     tui::Draw(row++, 0, "SPACE: Start/stop timer");
     tui::Draw(row++, 0, "s: Save time");
@@ -41,6 +40,7 @@ static void DrawHeader()
 
 static void DrawPuzzleName(int& row, const Puzzle puzzle)
 {
+    ++row;
     std::string puzzle_name;
     switch (puzzle) {
     case Puzzle::Cube2:
@@ -149,8 +149,6 @@ int main()
     tui::Init();
     timeout(10);
 
-    DrawHeader();
-
     auto times = std::map<Puzzle, std::vector<std::chrono::nanoseconds>>();
     auto puzzle = Puzzle::Cube3;
     auto scramble = GenerateScramble(puzzle);
@@ -216,10 +214,10 @@ int main()
             return 0;
         }
 
-        auto row = 8;
-        move(row, 0);
-        clrtobot();
+        clear();
 
+        auto row = 0;
+        DrawHeader(row);
         DrawPuzzleName(row, puzzle);
         DrawScramble(row, scramble);
         DrawTimer(row, timer, inspecting);
