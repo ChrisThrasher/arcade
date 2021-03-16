@@ -64,8 +64,13 @@ static void DrawScramble(int& row, const Scramble& scramble)
     if (scramble.empty())
         return;
 
-    constexpr auto break_point = 7;
-    constexpr auto width = 4;
+    const auto width = std::max_element(scramble.begin(),
+                                        scramble.end(),
+                                        [](const auto& lhs, const auto& rhs) { return lhs.length() < rhs.length(); })
+                           ->length()
+        + 1;
+
+    const auto break_point = 28 / width;
     for (size_t i = 0; i < scramble.size(); ++i) {
         tui::Draw(row, (i % break_point) * width, scramble[i]);
 
