@@ -109,7 +109,7 @@ static void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& tim
     ++row;
     tui::Draw(row++, 0, "===========Times===========");
     if (times.empty()) {
-        tui::Draw(row++, 0, "Press S to save a time");
+        tui::Draw(row++, 0, "Press 's' to save a time");
         return;
     }
 
