@@ -28,6 +28,7 @@ static auto FormatDuration(std::chrono::nanoseconds duration)
 
 static void DrawHeader(int& row)
 {
+    ++row;
     tui::Draw(row++, 0, "=========Controls==========");
     tui::Draw(row++, 0, "SPACE: Start/stop timer");
     tui::Draw(row++, 0, "s: Save time");
@@ -40,7 +41,6 @@ static void DrawHeader(int& row)
 
 static void DrawPuzzleName(int& row, const Puzzle puzzle)
 {
-    ++row;
     std::string puzzle_name;
     switch (puzzle) {
     case Puzzle::Cube2:
@@ -69,8 +69,8 @@ static void DrawScramble(int& row, const Scramble& scramble)
                                         [](const auto& lhs, const auto& rhs) { return lhs.length() < rhs.length(); })
                            ->length()
         + 1;
-
     const auto break_point = 28 / width;
+
     for (size_t i = 0; i < scramble.size(); ++i) {
         tui::Draw(row, (i % break_point) * width, scramble[i]);
 
@@ -109,6 +109,11 @@ static void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& tim
 {
     ++row;
     tui::Draw(row++, 0, "===========Times===========");
+    if (times.empty()) {
+        tui::Draw(row++, 0, "Press S to save a time");
+        return;
+    }
+
     auto sorted_times = times;
     std::sort(sorted_times.begin(), sorted_times.end());
     for (size_t i = 0; i < times.size(); ++i) {
@@ -217,11 +222,11 @@ int main()
         clear();
 
         auto row = 0;
-        DrawHeader(row);
         DrawPuzzleName(row, puzzle);
         DrawScramble(row, scramble);
         DrawTimer(row, timer, inspecting);
         DrawTimes(row, times[puzzle]);
+        DrawHeader(row);
 
         refresh();
     }
