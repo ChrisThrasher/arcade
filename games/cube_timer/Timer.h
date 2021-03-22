@@ -12,6 +12,9 @@ public:
     void Stop();
     void Toggle();
     void Reset();
+    void Clear();
+    void Restart();
+
     auto Query() const -> std::chrono::nanoseconds;
     auto Running() const { return m_running; }
 };

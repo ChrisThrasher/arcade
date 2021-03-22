@@ -162,9 +162,7 @@ int main()
         switch (getch()) {
         case ' ':
             if (inspecting) {
-                timer.Stop();
-                timer.Reset();
-                timer.Start();
+                timer.Restart();
                 inspecting = false;
             } else {
                 timer.Toggle();
@@ -173,8 +171,7 @@ int main()
         case 's':
             if (timer.Query() != std::chrono::nanoseconds(0) && !inspecting) {
                 times[puzzle].push_back(timer.Query());
-                timer.Stop();
-                timer.Reset();
+                timer.Clear();
                 scramble = GenerateScramble(puzzle);
             }
             break;
@@ -183,15 +180,12 @@ int main()
                 times[puzzle].pop_back();
             break;
         case 'r':
-            timer.Stop();
-            timer.Reset();
+            timer.Clear();
             inspecting = false;
             break;
         case 'i':
             if (!inspecting && !timer.Running()) {
-                timer.Stop();
-                timer.Reset();
-                timer.Start();
+                timer.Restart();
                 inspecting = true;
             }
             break;

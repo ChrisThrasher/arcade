@@ -30,6 +30,18 @@ void Timer::Reset()
     m_duration = std::chrono::nanoseconds(0);
 }
 
+void Timer::Clear()
+{
+    Stop();
+    Reset();
+}
+
+void Timer::Restart()
+{
+    Clear();
+    Start();
+}
+
 auto Timer::Query() const -> std::chrono::nanoseconds
 {
     if (m_running)
