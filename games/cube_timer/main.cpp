@@ -9,7 +9,6 @@
 #include <map>
 #include <numeric>
 #include <sstream>
-#include <thread>
 #include <vector>
 
 static auto FormatDuration(std::chrono::nanoseconds duration)
