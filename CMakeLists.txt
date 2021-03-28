@@ -8,8 +8,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wshadow)
 
-add_subdirectory(games)
 add_subdirectory(lib/tui)
+add_subdirectory(src)
 
 add_custom_target(format
     COMMAND clang-format -i `git ls-files *.h *.cpp`
