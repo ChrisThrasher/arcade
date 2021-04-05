@@ -54,6 +54,12 @@ static void DrawPuzzleName(int& row, const Puzzle puzzle)
     case Puzzle::Cube5:
         puzzle_name = "5x5";
         break;
+    case Puzzle::Cube6:
+        puzzle_name = "6x6";
+        break;
+    case Puzzle::Cube7:
+        puzzle_name = "7x7";
+        break;
     }
     tui::Draw(row++, 12, puzzle_name);
 }
@@ -207,6 +213,14 @@ int main()
         case '5':
             if (puzzle != Puzzle::Cube5)
                 scramble = GenerateScramble(puzzle = Puzzle::Cube5);
+            break;
+        case '6':
+            if (puzzle != Puzzle::Cube6)
+                scramble = GenerateScramble(puzzle = Puzzle::Cube6);
+            break;
+        case '7':
+            if (puzzle != Puzzle::Cube7)
+                scramble = GenerateScramble(puzzle = Puzzle::Cube7);
             break;
         case 'q':
             return 0;

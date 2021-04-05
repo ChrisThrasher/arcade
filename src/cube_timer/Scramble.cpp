@@ -81,6 +81,10 @@ auto GenerateScramble(const Puzzle puzzle) -> Scramble
         return GenerateScramble(28, Generate4x4Move);
     case Puzzle::Cube5:
         return GenerateScramble(35, Generate4x4Move);
+    case Puzzle::Cube6:
+        return {};
+    case Puzzle::Cube7:
+        return {};
     }
 
     return {};
