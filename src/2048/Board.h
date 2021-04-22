@@ -4,9 +4,6 @@
 #include <functional>
 #include <random>
 
-void Merge(int& dest, int& src);
-void ProcessTileset(int& tile1, int& tile2, int& tile3, int& tile4, int& score);
-
 class Board {
     std::array<std::array<int, 4>, 4> m_board {};
     std::random_device m_rd {};
@@ -17,22 +14,22 @@ class Board {
 
     enum class Direction { UP, DOWN, LEFT, RIGHT };
 
-    void Move(const Direction);
-    void AddNewTile();
-    bool IsFull() const;
+    void move(const Direction);
+    void add_new_tile();
+    bool is_full() const;
 
 public:
     Board();
 
     enum class State { IN_PROGRESS, SUCCESS, FAILURE };
 
-    void Reset();
-    auto GameState() const -> State;
-    auto Score() const { return m_score; }
-    auto Data() const { return m_board; }
+    void reset();
+    auto game_state() const -> State;
+    auto score() const { return m_score; }
+    auto data() const { return m_board; }
 
-    void Up() { Move(Direction::UP); }
-    void Down() { Move(Direction::DOWN); }
-    void Left() { Move(Direction::LEFT); }
-    void Right() { Move(Direction::RIGHT); }
+    void up() { move(Direction::UP); }
+    void down() { move(Direction::DOWN); }
+    void left() { move(Direction::LEFT); }
+    void right() { move(Direction::RIGHT); }
 };

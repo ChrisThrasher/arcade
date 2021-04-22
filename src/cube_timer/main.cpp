@@ -11,7 +11,7 @@
 #include <sstream>
 #include <vector>
 
-static auto FormatDuration(std::chrono::nanoseconds duration)
+static auto format_duration(std::chrono::nanoseconds duration)
 {
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration -= minutes);
@@ -25,20 +25,20 @@ static auto FormatDuration(std::chrono::nanoseconds duration)
     return ss.str();
 }
 
-static void DrawHeader(int& row)
+static void draw_header(int& row)
 {
     ++row;
-    tui::Draw(row++, 0, "=========Controls==========");
-    tui::Draw(row++, 0, "SPACE: Start/stop timer");
-    tui::Draw(row++, 0, "s: Save time");
-    tui::Draw(row++, 0, "d: Delete time");
-    tui::Draw(row++, 0, "r: Reset timer");
-    tui::Draw(row++, 0, "i: Start inspection");
-    tui::Draw(row++, 0, "g: Generate scramble");
-    tui::Draw(row++, 0, "q: Quit");
+    tui::draw(row++, 0, "=========Controls==========");
+    tui::draw(row++, 0, "SPACE: Start/stop timer");
+    tui::draw(row++, 0, "s: Save time");
+    tui::draw(row++, 0, "d: Delete time");
+    tui::draw(row++, 0, "r: Reset timer");
+    tui::draw(row++, 0, "i: Start inspection");
+    tui::draw(row++, 0, "g: Generate scramble");
+    tui::draw(row++, 0, "q: Quit");
 }
 
-static void DrawPuzzleName(int& row, const Puzzle puzzle)
+static void draw_puzzle_name(int& row, const Puzzle puzzle)
 {
     std::string puzzle_name;
     switch (puzzle) {
@@ -61,10 +61,10 @@ static void DrawPuzzleName(int& row, const Puzzle puzzle)
         puzzle_name = "7x7";
         break;
     }
-    tui::Draw(row++, 12, puzzle_name);
+    tui::draw(row++, 12, puzzle_name);
 }
 
-static void DrawScramble(int& row, const Scramble& scramble)
+static void draw_scramble(int& row, const Scramble& scramble)
 {
     if (scramble.empty())
         return;
@@ -77,7 +77,7 @@ static void DrawScramble(int& row, const Scramble& scramble)
     const auto break_point = 28 / width;
 
     for (size_t i = 0; i < scramble.size(); ++i) {
-        tui::Draw(row, (i % break_point) * width, scramble[i]);
+        tui::draw(row, (i % break_point) * width, scramble[i]);
 
         const bool end_of_row = (i + 1) % break_point == 0;
         const bool not_last_element = i + 1 < scramble.size();
@@ -87,16 +87,16 @@ static void DrawScramble(int& row, const Scramble& scramble)
     ++row;
 }
 
-static void DrawTimer(int& row, Timer& timer, bool& inspecting)
+static void draw_timer(int& row, Timer& timer, bool& inspecting)
 {
     using namespace std::chrono_literals;
 
     ++row;
-    auto time = timer.Query();
+    auto time = timer.query();
     auto color = 0;
     if (inspecting) {
         if (time > 15s) {
-            timer.Reset();
+            timer.reset();
             inspecting = false;
         } else {
             time = 15s - time;
@@ -107,22 +107,22 @@ static void DrawTimer(int& row, Timer& timer, bool& inspecting)
         }
     }
 
-    tui::Draw(row++, 10, FormatDuration(time), color);
+    tui::draw(row++, 10, format_duration(time), color);
 }
 
-static void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& times)
+static void draw_times(int& row, const std::vector<std::chrono::nanoseconds>& times)
 {
     ++row;
-    tui::Draw(row++, 0, "===========Times===========");
+    tui::draw(row++, 0, "===========Times===========");
     if (times.empty()) {
-        tui::Draw(row++, 0, "Press 's' to save a time");
+        tui::draw(row++, 0, "Press 's' to save a time");
         return;
     }
 
     auto sorted_times = times;
     std::sort(sorted_times.begin(), sorted_times.end());
     for (size_t i = 0; i < times.size(); ++i) {
-        tui::Draw(row, 1, std::to_string(i + 1));
+        tui::draw(row, 1, std::to_string(i + 1));
 
         int color = 0;
         if (times.size() <= 1)
@@ -131,7 +131,7 @@ static void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& tim
             color = tui::green;
         else if (times[i] == sorted_times.back())
             color = tui::red;
-        tui::Draw(row, 6, FormatDuration(times[i]), color);
+        tui::draw(row, 6, format_duration(times[i]), color);
 
         int sorted_color = 0;
         if (sorted_times.size() <= 1)
@@ -140,45 +140,45 @@ static void DrawTimes(int& row, const std::vector<std::chrono::nanoseconds>& tim
             sorted_color = tui::green;
         else if (i == times.size() - 1)
             sorted_color = tui::red;
-        tui::Draw(row++, 18, FormatDuration(sorted_times[i]), sorted_color);
+        tui::draw(row++, 18, format_duration(sorted_times[i]), sorted_color);
     }
     if (!times.empty()) {
         ++row;
         auto average = std::accumulate(times.begin(), times.end(), std::chrono::nanoseconds(0)) / times.size();
-        tui::Draw(row++, 0, "Average: " + FormatDuration(average));
+        tui::draw(row++, 0, "Average: " + format_duration(average));
     }
     if (sorted_times.size() >= 3) {
         auto mid_avg = std::accumulate(sorted_times.begin() + 1, sorted_times.end() - 1, std::chrono::nanoseconds(0))
             / (sorted_times.size() - 2);
-        tui::Draw(row++, 0, "Mid avg: " + FormatDuration(mid_avg));
+        tui::draw(row++, 0, "Mid avg: " + format_duration(mid_avg));
     }
 }
 
 int main()
 {
-    tui::Init();
+    tui::init();
     timeout(10);
 
     auto times = std::map<Puzzle, std::vector<std::chrono::nanoseconds>>();
     auto puzzle = Puzzle::Cube3;
-    auto scramble = GenerateScramble(puzzle);
+    auto scramble = generate_scramble(puzzle);
     auto timer = Timer();
     auto inspecting = false;
     for (;;) {
         switch (getch()) {
         case ' ':
             if (inspecting) {
-                timer.Restart();
+                timer.restart();
                 inspecting = false;
             } else {
-                timer.Toggle();
+                timer.toggle();
             }
             break;
         case 's':
-            if (timer.Query() != std::chrono::nanoseconds(0) && !inspecting) {
-                times[puzzle].push_back(timer.Query());
-                timer.Clear();
-                scramble = GenerateScramble(puzzle);
+            if (timer.query() != std::chrono::nanoseconds(0) && !inspecting) {
+                times[puzzle].push_back(timer.query());
+                timer.clear();
+                scramble = generate_scramble(puzzle);
             }
             break;
         case 'd':
@@ -186,41 +186,41 @@ int main()
                 times[puzzle].pop_back();
             break;
         case 'r':
-            timer.Clear();
+            timer.clear();
             inspecting = false;
             break;
         case 'i':
-            if (!inspecting && !timer.Running()) {
-                timer.Restart();
+            if (!inspecting && !timer.running()) {
+                timer.restart();
                 inspecting = true;
             }
             break;
         case 'g':
-            scramble = GenerateScramble(puzzle);
+            scramble = generate_scramble(puzzle);
             break;
         case '2':
             if (puzzle != Puzzle::Cube2)
-                scramble = GenerateScramble(puzzle = Puzzle::Cube2);
+                scramble = generate_scramble(puzzle = Puzzle::Cube2);
             break;
         case '3':
             if (puzzle != Puzzle::Cube3)
-                scramble = GenerateScramble(puzzle = Puzzle::Cube3);
+                scramble = generate_scramble(puzzle = Puzzle::Cube3);
             break;
         case '4':
             if (puzzle != Puzzle::Cube4)
-                scramble = GenerateScramble(puzzle = Puzzle::Cube4);
+                scramble = generate_scramble(puzzle = Puzzle::Cube4);
             break;
         case '5':
             if (puzzle != Puzzle::Cube5)
-                scramble = GenerateScramble(puzzle = Puzzle::Cube5);
+                scramble = generate_scramble(puzzle = Puzzle::Cube5);
             break;
         case '6':
             if (puzzle != Puzzle::Cube6)
-                scramble = GenerateScramble(puzzle = Puzzle::Cube6);
+                scramble = generate_scramble(puzzle = Puzzle::Cube6);
             break;
         case '7':
             if (puzzle != Puzzle::Cube7)
-                scramble = GenerateScramble(puzzle = Puzzle::Cube7);
+                scramble = generate_scramble(puzzle = Puzzle::Cube7);
             break;
         case 'q':
             return 0;
@@ -229,11 +229,11 @@ int main()
         clear();
 
         auto row = 0;
-        DrawPuzzleName(row, puzzle);
-        DrawScramble(row, scramble);
-        DrawTimer(row, timer, inspecting);
-        DrawTimes(row, times[puzzle]);
-        DrawHeader(row);
+        draw_puzzle_name(row, puzzle);
+        draw_scramble(row, scramble);
+        draw_timer(row, timer, inspecting);
+        draw_times(row, times[puzzle]);
+        draw_header(row);
 
         refresh();
     }

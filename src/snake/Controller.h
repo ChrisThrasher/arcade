@@ -3,8 +3,8 @@
 #include "Game.h"
 
 class Controller {
-    void GetInput();
-    void Draw();
+    void get_input();
+    void draw();
 
     Game m_game {};
     bool m_running { true };
@@ -13,6 +13,6 @@ public:
     Controller();
     ~Controller();
 
-    void Cycle();
-    bool Running() const { return m_running; }
+    void cycle();
+    bool running() const { return m_running; }
 };

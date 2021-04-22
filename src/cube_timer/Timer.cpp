@@ -1,50 +1,50 @@
 #include "Timer.h"
 
-auto Now() { return std::chrono::system_clock::now(); }
+static auto now() { return std::chrono::system_clock::now(); }
 
-void Timer::Start()
+void Timer::start()
 {
-    m_start = Now();
+    m_start = now();
     m_running = true;
 }
 
-void Timer::Stop()
+void Timer::stop()
 {
-    auto now = Now();
-    m_duration += now - m_start;
-    m_start = now;
+    auto current_time = now();
+    m_duration += current_time - m_start;
+    m_start = current_time;
     m_running = false;
 }
 
-void Timer::Toggle()
+void Timer::toggle()
 {
     if (m_running)
-        Stop();
+        stop();
     else
-        Start();
+        start();
 }
 
-void Timer::Reset()
+void Timer::reset()
 {
-    m_start = Now();
+    m_start = now();
     m_duration = std::chrono::nanoseconds(0);
 }
 
-void Timer::Clear()
+void Timer::clear()
 {
-    Stop();
-    Reset();
+    stop();
+    reset();
 }
 
-void Timer::Restart()
+void Timer::restart()
 {
-    Clear();
-    Start();
+    clear();
+    start();
 }
 
-auto Timer::Query() const -> std::chrono::nanoseconds
+auto Timer::query() const -> std::chrono::nanoseconds
 {
     if (m_running)
-        return Now() - m_start + m_duration;
+        return now() - m_start + m_duration;
     return m_duration;
 }

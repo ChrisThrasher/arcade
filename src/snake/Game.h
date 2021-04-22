@@ -8,22 +8,22 @@
 class Game {
     enum class Direction { NONE = 0, UP, DOWN, LEFT, RIGHT };
 
-    void AddFruit();
+    void add_fruit();
 
 public:
     enum class Tile { EMPTY = 0, SNAKE, FRUIT };
 
     Game();
 
-    void Cycle();
-    void Up();
-    void Down();
-    void Left();
-    void Right();
+    void cycle();
+    void up();
+    void down();
+    void left();
+    void right();
 
-    bool Running() const { return m_running; }
-    auto Board() const { return m_board; }
-    auto Score() const { return m_score; }
+    bool running() const { return m_running; }
+    auto board() const { return m_board; }
+    auto score() const { return m_score; }
 
 private:
     static constexpr size_t m_size { 20 };

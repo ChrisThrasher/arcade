@@ -5,10 +5,10 @@ Game::Game()
     m_snake = { std::ref(m_board[m_head.first][m_head.second]) };
     for (auto& tile : m_snake)
         tile.get() = Tile::SNAKE;
-    AddFruit();
+    add_fruit();
 }
 
-void Game::Cycle()
+void Game::cycle()
 {
     switch (m_direction) {
     case Direction::UP:
@@ -35,7 +35,7 @@ void Game::Cycle()
     case Tile::FRUIT:
         m_snake.push_front(upcoming_tile);
         m_snake.front().get() = Tile::SNAKE;
-        AddFruit();
+        add_fruit();
         ++m_score;
         break;
     case Tile::EMPTY:
@@ -47,7 +47,7 @@ void Game::Cycle()
     }
 }
 
-void Game::AddFruit()
+void Game::add_fruit()
 {
     auto row = m_distribution(m_rng);
     auto col = m_distribution(m_rng);
@@ -58,27 +58,27 @@ void Game::AddFruit()
     m_board[row][col] = Tile::FRUIT;
 }
 
-void Game::Up()
+void Game::up()
 {
     if (m_direction != Direction::DOWN)
         m_direction = Direction::UP;
-    Cycle();
+    cycle();
 }
-void Game::Down()
+void Game::down()
 {
     if (m_direction != Direction::UP)
         m_direction = Direction::DOWN;
-    Cycle();
+    cycle();
 }
-void Game::Left()
+void Game::left()
 {
     if (m_direction != Direction::RIGHT)
         m_direction = Direction::LEFT;
-    Cycle();
+    cycle();
 }
-void Game::Right()
+void Game::right()
 {
     if (m_direction != Direction::LEFT)
         m_direction = Direction::RIGHT;
-    Cycle();
+    cycle();
 }

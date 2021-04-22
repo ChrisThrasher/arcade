@@ -7,59 +7,59 @@
 #include <map>
 #include <sstream>
 
-void Draw(const Board& board);
+void draw(const Board& board);
 
 int main()
 {
-    tui::Init();
+    tui::init();
 
     Board board;
 
     for (;;) {
         clear();
-        Draw(board);
+        draw(board);
 
         switch (getch()) {
         case KEY_UP:
-            board.Up();
+            board.up();
             break;
         case KEY_DOWN:
-            board.Down();
+            board.down();
             break;
         case KEY_LEFT:
-            board.Left();
+            board.left();
             break;
         case KEY_RIGHT:
-            board.Right();
+            board.right();
             break;
         case 'n':
-            board.Reset();
+            board.reset();
             break;
         case 'q':
             return 0;
             break;
         }
 
-        switch (board.GameState()) {
+        switch (board.game_state()) {
         case Board::State::IN_PROGRESS:
             break;
         case Board::State::SUCCESS:
-            Draw(board);
-            tui::Draw(14, 0, "You win!");
-            tui::WaitFor('q');
+            draw(board);
+            tui::draw(14, 0, "You win!");
+            tui::wait_for('q');
             return 0;
         case Board::State::FAILURE:
-            Draw(board);
-            tui::Draw(14, 0, "Game over.");
-            tui::WaitFor('q');
+            draw(board);
+            tui::draw(14, 0, "Game over.");
+            tui::wait_for('q');
             return -1;
         }
     }
 }
 
-void Draw(const Board& board)
+void draw(const Board& board)
 {
-    const auto& data = board.Data();
+    const auto& data = board.data();
 
     static const std::map<size_t, int> colors
         = { { 0, tui::white },    { 2, tui::white }, { 4, tui::yellow },     { 8, tui::red },
@@ -68,10 +68,10 @@ void Draw(const Board& board)
 
     size_t row = 0;
     for (; row < data.size(); ++row) {
-        tui::Draw(row * 2, 0, "---------------------\n");
+        tui::draw(row * 2, 0, "---------------------\n");
         size_t col = 0;
         for (; col < data[row].size(); ++col) {
-            tui::Draw(row * 2 + 1, col * 5, "|");
+            tui::draw(row * 2 + 1, col * 5, "|");
             std::stringstream out;
             out << std::setfill(' ') << std::right << std::setw(4);
             const auto& cell = data[row][col];
@@ -79,13 +79,13 @@ void Draw(const Board& board)
                 out << cell;
             else
                 out << ' ';
-            tui::Draw(row * 2 + 1, col * 5 + 1, out.str(), colors.at(cell));
+            tui::draw(row * 2 + 1, col * 5 + 1, out.str(), colors.at(cell));
         }
-        tui::Draw(row * 2 + 1, col * 5, "|");
+        tui::draw(row * 2 + 1, col * 5, "|");
     }
-    tui::Draw(row * 2, 0, "---------------------\n");
+    tui::draw(row * 2, 0, "---------------------\n");
 
-    tui::Draw(row * 2 + 1, 0, "Score: " + std::to_string(board.Score()));
-    tui::Draw(row * 2 + 3, 0, "q: Quit");
-    tui::Draw(row * 2 + 4, 0, "n: New game");
+    tui::draw(row * 2 + 1, 0, "Score: " + std::to_string(board.score()));
+    tui::draw(row * 2 + 3, 0, "q: Quit");
+    tui::draw(row * 2 + 4, 0, "n: New game");
 }

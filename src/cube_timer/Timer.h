@@ -8,13 +8,13 @@ class Timer {
     bool m_running { false };
 
 public:
-    void Start();
-    void Stop();
-    void Toggle();
-    void Reset();
-    void Clear();
-    void Restart();
+    void start();
+    void stop();
+    void toggle();
+    void reset();
+    void clear();
+    void restart();
 
-    auto Query() const -> std::chrono::nanoseconds;
-    auto Running() const { return m_running; }
+    auto query() const -> std::chrono::nanoseconds;
+    auto running() const { return m_running; }
 };

@@ -4,52 +4,52 @@
 
 #include <algorithm>
 
-void Draw(ConnectFour game, int column)
+void draw(ConnectFour game, int column)
 {
     clear();
 
-    auto board = game.Board();
+    auto board = game.board();
     for (size_t row = 0; row < 6; ++row) {
         for (size_t col = 0; col < 7; ++col) {
             switch (board[col][row]) {
             case Tile::EMPTY:
-                tui::Draw(6 - row, col * 2, "_");
+                tui::draw(6 - row, col * 2, "_");
                 break;
             case Tile::RED:
-                tui::Draw(6 - row, col * 2, "O", tui::red);
+                tui::draw(6 - row, col * 2, "O", tui::red);
                 break;
             case Tile::YEL:
-                tui::Draw(6 - row, col * 2, "O", tui::yellow);
+                tui::draw(6 - row, col * 2, "O", tui::yellow);
                 break;
             }
         }
     }
 
-    switch (game.ActiveTile()) {
+    switch (game.active_tile()) {
     case Tile::EMPTY:
         break;
     case Tile::RED:
-        tui::Draw(7, column * 2, "^", tui::red);
+        tui::draw(7, column * 2, "^", tui::red);
         break;
     case Tile::YEL:
-        tui::Draw(7, column * 2, "^", tui::yellow);
+        tui::draw(7, column * 2, "^", tui::yellow);
         break;
     }
 
-    tui::Draw(8, 0, "Press q to exit");
+    tui::draw(8, 0, "Press q to exit");
 
     refresh();
 }
 
 int main()
 {
-    tui::Init();
+    tui::init();
 
     ConnectFour game;
-    while (game.Running()) {
+    while (game.running()) {
         static int column = 3;
 
-        Draw(game, column);
+        draw(game, column);
 
         switch (getch()) {
         case KEY_LEFT:
@@ -59,14 +59,14 @@ int main()
             column = std::min(6, column + 1);
             break;
         case KEY_DOWN:
-            game.Add(column);
+            game.add(column);
             break;
         case 'q':
             return 0;
         }
     }
 
-    Draw(game, -1);
-    tui::Draw(10, 0, "Game over");
-    tui::WaitFor('q');
+    draw(game, -1);
+    tui::draw(10, 0, "Game over");
+    tui::wait_for('q');
 }

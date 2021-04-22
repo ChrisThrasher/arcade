@@ -11,7 +11,7 @@ int cyan = 0;
 int blue = 0;
 int magenta = 0;
 
-void Init()
+void init()
 {
     initscr();
     cbreak();
@@ -44,7 +44,7 @@ void Init()
     std::atexit([]() { endwin(); });
 }
 
-void WaitFor(char c)
+void wait_for(char c)
 {
     while (getch() != c) { };
 }

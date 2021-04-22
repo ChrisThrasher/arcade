@@ -15,11 +15,11 @@ extern int cyan;
 extern int blue;
 extern int magenta;
 
-void Init();
-void WaitFor(char c);
+void init();
+void wait_for(char c);
 
 template <typename T, typename U>
-void Draw(T row, U col, const std::string& text, int color = 0)
+void draw(T row, U col, const std::string& text, int color = 0)
 {
     if (color == 0) {
         mvaddstr(static_cast<int>(row), static_cast<int>(col), text.c_str());

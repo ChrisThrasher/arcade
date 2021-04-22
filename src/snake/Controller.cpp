@@ -4,72 +4,72 @@
 
 Controller::Controller()
 {
-    tui::Init();
+    tui::init();
     timeout(50);
 }
 
 Controller::~Controller()
 {
-    tui::Draw(22, 0, "Game over.");
-    tui::WaitFor('q');
+    tui::draw(22, 0, "Game over.");
+    tui::wait_for('q');
 }
 
-void Controller::Cycle()
+void Controller::cycle()
 {
-    GetInput();
-    Draw();
+    get_input();
+    draw();
 }
 
-void Controller::GetInput()
+void Controller::get_input()
 {
     switch (getch()) {
     case KEY_UP:
-        m_game.Up();
+        m_game.up();
         break;
     case KEY_DOWN:
-        m_game.Down();
+        m_game.down();
         break;
     case KEY_LEFT:
-        m_game.Left();
+        m_game.left();
         break;
     case KEY_RIGHT:
-        m_game.Right();
+        m_game.right();
         break;
     case 'q':
         m_running = false;
         return;
     default:
-        m_game.Cycle();
+        m_game.cycle();
         break;
     }
 
-    m_running = m_game.Running();
+    m_running = m_game.running();
 }
 
-void Controller::Draw()
+void Controller::draw()
 {
     clear();
 
-    const auto& board = m_game.Board();
+    const auto& board = m_game.board();
 
     size_t row = 0;
     for (; row < board.size(); ++row) {
         for (size_t col = 0; col < board[row].size(); ++col) {
             switch (board[row][col]) {
             case Game::Tile::EMPTY:
-                tui::Draw(row, col * 2, ".");
+                tui::draw(row, col * 2, ".");
                 break;
             case Game::Tile::SNAKE:
-                tui::Draw(row, col * 2, "0", tui::green);
+                tui::draw(row, col * 2, "0", tui::green);
                 break;
             case Game::Tile::FRUIT:
-                tui::Draw(row, col * 2, "X", tui::red);
+                tui::draw(row, col * 2, "X", tui::red);
                 break;
             }
         }
     }
 
-    tui::Draw(++row, 0, "Score: " + std::to_string(m_game.Score()));
+    tui::draw(++row, 0, "Score: " + std::to_string(m_game.score()));
 
     refresh();
 }

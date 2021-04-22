@@ -8,7 +8,7 @@
 static std::random_device g_rd;
 static std::mt19937 g_rng(g_rd());
 
-static auto Generate2x2Move() -> std::string
+static auto generate_2x2_move() -> std::string
 {
     constexpr std::array moves = { "U", "U'", "U2", "F", "F'", "F2", "R", "R'", "R2" };
 
@@ -23,7 +23,7 @@ static auto Generate2x2Move() -> std::string
     return move;
 }
 
-static auto Generate3x3Move() -> std::string
+static auto generate_3x3_move() -> std::string
 {
     constexpr std::array moves
         = { "U", "U'", "U2", "F", "F'", "F2", "L", "L'", "L2", "R", "R'", "R2", "B", "B'", "B2", "D", "D'", "D2" };
@@ -41,7 +41,7 @@ static auto Generate3x3Move() -> std::string
     return move;
 }
 
-static auto Generate4x4Move() -> std::string
+static auto generate_4x4_move() -> std::string
 {
     constexpr std::array moves
         = { "U",  "U'",  "U2",  "F",  "F'",  "F2",  "L",  "L'",  "L2",  "R",   "R'",  "R2", "B",   "B'",
@@ -62,7 +62,7 @@ static auto Generate4x4Move() -> std::string
     return move;
 }
 
-static auto GenerateScramble(const size_t length, const std::function<std::string()>& generator)
+static auto generate_scramble(const size_t length, const std::function<std::string()>& generator)
 {
     auto scramble = Scramble {};
     for (size_t i = 0; i < length; ++i)
@@ -70,19 +70,18 @@ static auto GenerateScramble(const size_t length, const std::function<std::strin
     return scramble;
 }
 
-auto GenerateScramble(const Puzzle puzzle) -> Scramble
+auto generate_scramble(const Puzzle puzzle) -> Scramble
 {
     switch (puzzle) {
     case Puzzle::Cube2:
-        return GenerateScramble(9, Generate2x2Move);
+        return generate_scramble(9, generate_2x2_move);
     case Puzzle::Cube3:
-        return GenerateScramble(21, Generate3x3Move);
+        return generate_scramble(21, generate_3x3_move);
     case Puzzle::Cube4:
-        return GenerateScramble(28, Generate4x4Move);
+        return generate_scramble(28, generate_4x4_move);
     case Puzzle::Cube5:
-        return GenerateScramble(35, Generate4x4Move);
+        return generate_scramble(35, generate_4x4_move);
     case Puzzle::Cube6:
-        return {};
     case Puzzle::Cube7:
         return {};
     }
