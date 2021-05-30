@@ -1,10 +1,15 @@
 #include "Controller.h"
 
+#include <cxxcurses/cxxcurses.hpp>
+
 #include <chrono>
 #include <thread>
 
 int main()
 {
+    cxxcurses::terminal init;
+    keypad(stdscr, TRUE);
+
     Controller controller;
 
     const auto period = std::chrono::milliseconds(100);

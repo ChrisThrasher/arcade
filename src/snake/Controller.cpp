@@ -1,17 +1,15 @@
 #include "Controller.h"
 
-#include <Tui/Tui.h>
+#include <cxxcurses/cxxcurses.hpp>
 
-Controller::Controller()
-{
-    tui::init();
-    timeout(50);
-}
+static const auto& g_win = cxxcurses::terminal::main_win;
+
+Controller::Controller() { timeout(50); }
 
 Controller::~Controller()
 {
-    tui::draw(22, 0, "Game over.");
-    tui::wait_for('q');
+    g_win << cxxcurses::format(22, 0)("Game over.");
+    while (getch() != 'q') { };
 }
 
 void Controller::cycle()
@@ -57,19 +55,19 @@ void Controller::draw()
         for (size_t col = 0; col < board[row].size(); ++col) {
             switch (board[row][col]) {
             case Game::Tile::EMPTY:
-                tui::draw(row, col * 2, ".");
+                g_win << cxxcurses::format(row, col * 2)(".");
                 break;
             case Game::Tile::SNAKE:
-                tui::draw(row, col * 2, "0", tui::green);
+                g_win << cxxcurses::format(row, col * 2)("{g}", "0");
                 break;
             case Game::Tile::FRUIT:
-                tui::draw(row, col * 2, "X", tui::red);
+                g_win << cxxcurses::format(row, col * 2)("{r}", "X");
                 break;
             }
         }
     }
 
-    tui::draw(++row, 0, "Score: " + std::to_string(m_game.score()));
+    g_win << cxxcurses::format(++row, 0)("Score: " + std::to_string(m_game.score()));
 
     refresh();
 }

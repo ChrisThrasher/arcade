@@ -12,9 +12,6 @@ FetchContent_Declare(cxxcurses
     GIT_TAG master)
 FetchContent_MakeAvailable(cxxcurses)
 
-add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wshadow)
-
-add_subdirectory(lib/tui)
 add_subdirectory(src)
 
 add_custom_target(format
