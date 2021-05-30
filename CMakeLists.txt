@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+include(FetchContent)
+FetchContent_Declare(cxxcurses
+    GIT_REPOSITORY "https://github.com/hjaremko/cxxcurses.git"
+    GIT_TAG master)
+FetchContent_MakeAvailable(cxxcurses)
+
 add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wshadow)
 
 add_subdirectory(lib/tui)

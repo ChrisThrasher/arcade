@@ -1,7 +1,7 @@
 #include "Scramble.h"
 #include "Timer.h"
 
-#include <Tui/Tui.h>
+#include <cxxcurses/cxxcurses.hpp>
 
 #include <algorithm>
 #include <chrono>
@@ -10,6 +10,8 @@
 #include <numeric>
 #include <sstream>
 #include <vector>
+
+static const auto& g_win = cxxcurses::terminal::main_win;
 
 static auto format_duration(std::chrono::nanoseconds duration)
 {
@@ -28,14 +30,14 @@ static auto format_duration(std::chrono::nanoseconds duration)
 static void draw_header(int& row)
 {
     ++row;
-    tui::draw(row++, 0, "=========Controls==========");
-    tui::draw(row++, 0, "SPACE: Start/stop timer");
-    tui::draw(row++, 0, "s: Save time");
-    tui::draw(row++, 0, "d: Delete time");
-    tui::draw(row++, 0, "r: Reset timer");
-    tui::draw(row++, 0, "i: Start inspection");
-    tui::draw(row++, 0, "g: Generate scramble");
-    tui::draw(row++, 0, "q: Quit");
+    g_win << cxxcurses::format(row++, 0)("=========Controls==========");
+    g_win << cxxcurses::format(row++, 0)("SPACE: Start/stop timer");
+    g_win << cxxcurses::format(row++, 0)("s: Save time");
+    g_win << cxxcurses::format(row++, 0)("d: Delete time");
+    g_win << cxxcurses::format(row++, 0)("r: Reset timer");
+    g_win << cxxcurses::format(row++, 0)("i: Start inspection");
+    g_win << cxxcurses::format(row++, 0)("g: Generate scramble");
+    g_win << cxxcurses::format(row++, 0)("q: Quit");
 }
 
 static void draw_puzzle_name(int& row, const Puzzle puzzle)
@@ -61,7 +63,7 @@ static void draw_puzzle_name(int& row, const Puzzle puzzle)
         puzzle_name = "7x7";
         break;
     }
-    tui::draw(row++, 12, puzzle_name);
+    g_win << cxxcurses::format(row++, 12)(puzzle_name);
 }
 
 static void draw_scramble(int& row, const Scramble& scramble)
@@ -77,7 +79,7 @@ static void draw_scramble(int& row, const Scramble& scramble)
     const auto break_point = 28 / width;
 
     for (size_t i = 0; i < scramble.size(); ++i) {
-        tui::draw(row, (i % break_point) * width, scramble[i]);
+        g_win << cxxcurses::format(row, (i % break_point) * width)(scramble[i]);
 
         const bool end_of_row = (i + 1) % break_point == 0;
         const bool not_last_element = i + 1 < scramble.size();
@@ -93,7 +95,7 @@ static void draw_timer(int& row, Timer& timer, bool& inspecting)
 
     ++row;
     auto time = timer.query();
-    auto color = 0;
+    std::string format = "{}";
     if (inspecting) {
         if (time > 15s) {
             timer.reset();
@@ -101,62 +103,62 @@ static void draw_timer(int& row, Timer& timer, bool& inspecting)
         } else {
             time = 15s - time;
             if (time < 8s)
-                color = tui::red;
+                format = "{r}";
             else
-                color = tui::yellow;
+                format = "{y}";
         }
     }
 
-    tui::draw(row++, 10, format_duration(time), color);
+    g_win << cxxcurses::format(row++, 10)(format, format_duration(time));
 }
 
 static void draw_times(int& row, const std::vector<std::chrono::nanoseconds>& times)
 {
     ++row;
-    tui::draw(row++, 0, "===========Times===========");
+    g_win << cxxcurses::format(row++, 0)("===========Times===========");
     if (times.empty()) {
-        tui::draw(row++, 0, "Press 's' to save a time");
+        g_win << cxxcurses::format(row++, 0)("Press 's' to save a time");
         return;
     }
 
     auto sorted_times = times;
     std::sort(sorted_times.begin(), sorted_times.end());
     for (size_t i = 0; i < times.size(); ++i) {
-        tui::draw(row, 1, std::to_string(i + 1));
+        g_win << cxxcurses::format(row, 1)(std::to_string(i + 1));
 
-        int color = 0;
+        std::string format = "{}";
         if (times.size() <= 1)
-            color = 0;
+            format = "{}";
         else if (times[i] == sorted_times.front())
-            color = tui::green;
+            format = "{g}";
         else if (times[i] == sorted_times.back())
-            color = tui::red;
-        tui::draw(row, 6, format_duration(times[i]), color);
+            format = "{r}";
+        g_win << cxxcurses::format(row, 6)(format, format_duration(times[i]));
 
-        int sorted_color = 0;
+        std::string sorted_format = "{}";
         if (sorted_times.size() <= 1)
-            sorted_color = 0;
+            sorted_format = "{}";
         else if (i == 0)
-            sorted_color = tui::green;
+            sorted_format = "{g}";
         else if (i == times.size() - 1)
-            sorted_color = tui::red;
-        tui::draw(row++, 18, format_duration(sorted_times[i]), sorted_color);
+            sorted_format = "{r}";
+        g_win << cxxcurses::format(row++, 18)(sorted_format, format_duration(sorted_times[i]));
     }
     if (!times.empty()) {
         ++row;
         auto average = std::accumulate(times.begin(), times.end(), std::chrono::nanoseconds(0)) / times.size();
-        tui::draw(row++, 0, "Average: " + format_duration(average));
+        g_win << cxxcurses::format(row++, 0)("Average: " + format_duration(average));
     }
     if (sorted_times.size() >= 3) {
         auto mid_avg = std::accumulate(sorted_times.begin() + 1, sorted_times.end() - 1, std::chrono::nanoseconds(0))
             / (sorted_times.size() - 2);
-        tui::draw(row++, 0, "Mid avg: " + format_duration(mid_avg));
+        g_win << cxxcurses::format(row++, 0)("Mid avg: " + format_duration(mid_avg));
     }
 }
 
 int main()
 {
-    tui::init();
+    cxxcurses::terminal init;
     timeout(10);
 
     auto times = std::map<Puzzle, std::vector<std::chrono::nanoseconds>>();
