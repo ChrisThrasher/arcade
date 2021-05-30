@@ -1,8 +1,10 @@
 #include "ConnectFour.h"
 
-#include <Tui/Tui.h>
+#include <cxxcurses/cxxcurses.hpp>
 
 #include <algorithm>
+
+static const auto& g_win = cxxcurses::terminal::main_win;
 
 void draw(ConnectFour game, int column)
 {
@@ -13,13 +15,13 @@ void draw(ConnectFour game, int column)
         for (size_t col = 0; col < 7; ++col) {
             switch (board[col][row]) {
             case Tile::EMPTY:
-                tui::draw(6 - row, col * 2, "_");
+                g_win << cxxcurses::format(6 - row, col * 2)("_");
                 break;
             case Tile::RED:
-                tui::draw(6 - row, col * 2, "O", tui::red);
+                g_win << cxxcurses::format(6 - row, col * 2)("{r}", "O");
                 break;
             case Tile::YEL:
-                tui::draw(6 - row, col * 2, "O", tui::yellow);
+                g_win << cxxcurses::format(6 - row, col * 2)("{y}", "O");
                 break;
             }
         }
@@ -29,21 +31,22 @@ void draw(ConnectFour game, int column)
     case Tile::EMPTY:
         break;
     case Tile::RED:
-        tui::draw(7, column * 2, "^", tui::red);
+        g_win << cxxcurses::format(7, column * 2)("{r}", "^");
         break;
     case Tile::YEL:
-        tui::draw(7, column * 2, "^", tui::yellow);
+        g_win << cxxcurses::format(7, column * 2)("{y}", "^");
         break;
     }
 
-    tui::draw(8, 0, "Press q to exit");
+    g_win << cxxcurses::format(8, 0)("Press q to exit");
 
     refresh();
 }
 
 int main()
 {
-    tui::init();
+    cxxcurses::terminal init;
+    keypad(stdscr, TRUE);
 
     ConnectFour game;
     while (game.running()) {
@@ -67,6 +70,6 @@ int main()
     }
 
     draw(game, -1);
-    tui::draw(10, 0, "Game over");
-    tui::wait_for('q');
+    g_win << cxxcurses::format(10, 0)("Game over");
+    while (getch() != 'q') { };
 }
