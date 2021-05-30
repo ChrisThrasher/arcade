@@ -8,8 +8,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(FetchContent)
 FetchContent_Declare(cxxcurses
-    GIT_REPOSITORY "https://github.com/hjaremko/cxxcurses.git"
-    GIT_TAG master)
+    GIT_REPOSITORY "https://github.com/ChrisThrasher/cxxcurses.git"
+    GIT_TAG inline-free-functions)
 FetchContent_MakeAvailable(cxxcurses)
 
 add_subdirectory(src)
