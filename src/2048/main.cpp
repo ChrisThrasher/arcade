@@ -1,17 +1,20 @@
 #include "Board.h"
 
-#include <Tui/Tui.h>
+#include <cxxcurses/cxxcurses.hpp>
 
 #include <cmath>
 #include <iomanip>
 #include <map>
 #include <sstream>
 
+static const auto& g_win = cxxcurses::terminal::main_win;
+
 void draw(const Board& board);
 
 int main()
 {
-    tui::init();
+    cxxcurses::terminal init;
+    keypad(stdscr, TRUE);
 
     Board board;
 
@@ -45,13 +48,13 @@ int main()
             break;
         case Board::State::SUCCESS:
             draw(board);
-            tui::draw(14, 0, "You win!");
-            tui::wait_for('q');
+            g_win << cxxcurses::format(14, 0)("You win!");
+            while (getch() != 'q') { };
             return 0;
         case Board::State::FAILURE:
             draw(board);
-            tui::draw(14, 0, "Game over.");
-            tui::wait_for('q');
+            g_win << cxxcurses::format(14, 0)("Game over.");
+            while (getch() != 'q') { };
             return -1;
         }
     }
@@ -59,19 +62,18 @@ int main()
 
 void draw(const Board& board)
 {
-    const auto& data = board.data();
+    static const std::map<size_t, std::string> colors
+        = { { 0, "{}" },   { 2, "{}" },    { 4, "{y}" },   { 8, "{r}" },   { 16, "{m}" },   { 32, "{b}" },
+            { 64, "{c}" }, { 128, "{g}" }, { 256, "{y}" }, { 512, "{r}" }, { 1024, "{m}" }, { 2048, "{b}" } };
 
-    static const std::map<size_t, int> colors
-        = { { 0, tui::white },    { 2, tui::white }, { 4, tui::yellow },     { 8, tui::red },
-            { 16, tui::magenta }, { 32, tui::blue }, { 64, tui::cyan },      { 128, tui::green },
-            { 256, tui::yellow }, { 512, tui::red }, { 1024, tui::magenta }, { 2048, tui::blue } };
+    const auto& data = board.data();
 
     size_t row = 0;
     for (; row < data.size(); ++row) {
-        tui::draw(row * 2, 0, "---------------------\n");
+        g_win << cxxcurses::format(row * 2, 0)("---------------------\n");
         size_t col = 0;
         for (; col < data[row].size(); ++col) {
-            tui::draw(row * 2 + 1, col * 5, "|");
+            g_win << cxxcurses::format(row * 2 + 1, col * 5)("|");
             std::stringstream out;
             out << std::setfill(' ') << std::right << std::setw(4);
             const auto& cell = data[row][col];
@@ -79,13 +81,13 @@ void draw(const Board& board)
                 out << cell;
             else
                 out << ' ';
-            tui::draw(row * 2 + 1, col * 5 + 1, out.str(), colors.at(cell));
+            g_win << cxxcurses::format(row * 2 + 1, col * 5 + 1)(colors.at(cell), out.str());
         }
-        tui::draw(row * 2 + 1, col * 5, "|");
+        g_win << cxxcurses::format(row * 2 + 1, col * 5)("|");
     }
-    tui::draw(row * 2, 0, "---------------------\n");
+    g_win << cxxcurses::format(row * 2, 0)("---------------------\n");
 
-    tui::draw(row * 2 + 1, 0, "Score: " + std::to_string(board.score()));
-    tui::draw(row * 2 + 3, 0, "q: Quit");
-    tui::draw(row * 2 + 4, 0, "n: New game");
+    g_win << cxxcurses::format(row * 2 + 1, 0)("Score: " + std::to_string(board.score()));
+    g_win << cxxcurses::format(row * 2 + 3, 0)("q: Quit");
+    g_win << cxxcurses::format(row * 2 + 4, 0)("n: New game");
 }
