@@ -8,7 +8,6 @@
 int main()
 {
     cxxcurses::terminal init;
-    keypad(stdscr, TRUE);
 
     Controller controller;
 

@@ -46,7 +46,6 @@ void draw(ConnectFour game, int column)
 int main()
 {
     cxxcurses::terminal init;
-    keypad(stdscr, TRUE);
 
     ConnectFour game;
     while (game.running()) {

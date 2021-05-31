@@ -14,7 +14,6 @@ void draw(const Board& board);
 int main()
 {
     cxxcurses::terminal init;
-    keypad(stdscr, TRUE);
 
     Board board;
 

@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(FetchContent)
 FetchContent_Declare(cxxcurses
     GIT_REPOSITORY "https://github.com/ChrisThrasher/cxxcurses.git"
-    GIT_TAG inline-free-functions)
+    GIT_TAG default-background)
 FetchContent_MakeAvailable(cxxcurses)
 
 add_subdirectory(src)
