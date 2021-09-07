@@ -16,9 +16,7 @@ add_subdirectory(src)
 
 add_custom_target(format
     COMMAND clang-format -i `git ls-files *.h *.cpp`
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 add_custom_target(tidy
-    COMMAND clang-tidy -p build/compile_commands.json `git ls-files *.cpp`
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
+    COMMAND clang-tidy -p ${CMAKE_BINARY_DIR} `git ls-files *.cpp`
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
