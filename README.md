@@ -4,16 +4,16 @@ A collection of terminal games
 
 # 2048
 
-![2048](doc/2048.png)
+![2048](docs/2048.png)
 
 # Snake
 
-![snake](doc/snake.png)
+![snake](docs/snake.png)
 
 # Connect Four
 
-![connect_four](doc/connect_four.png)
+![connect_four](docs/connect_four.png)
 
 # Rubik's Cube timer
 
-![cube_timer](doc/cube_timer.png)
+![cube_timer](docs/cube_timer.png)
