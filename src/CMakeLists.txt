@@ -1,4 +1,4 @@
-add_compile_options(-Werror -Wall -Wextra -Wpedantic)
+add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wold-style-cast)
 
 add_subdirectory(2048)
 add_subdirectory(connect_four)
