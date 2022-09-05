@@ -69,10 +69,10 @@ void draw(const Board& board)
 
     size_t row = 0;
     for (; row < data.size(); ++row) {
-        g_win << cxxcurses::format(row * 2, 0)("---------------------\n");
+        g_win << cxxcurses::format(int(row) * 2, 0)("---------------------\n");
         size_t col = 0;
         for (; col < data[row].size(); ++col) {
-            g_win << cxxcurses::format(row * 2 + 1, col * 5)("|");
+            g_win << cxxcurses::format(int(row) * 2 + 1, int(col) * 5)("|");
             std::stringstream out;
             out << std::setfill(' ') << std::right << std::setw(4);
             const auto& cell = data[row][col];
@@ -80,13 +80,13 @@ void draw(const Board& board)
                 out << cell;
             else
                 out << ' ';
-            g_win << cxxcurses::format(row * 2 + 1, col * 5 + 1)(colors.at(cell), out.str());
+            g_win << cxxcurses::format(int(row) * 2 + 1, int(col) * 5 + 1)(colors.at(cell), out.str());
         }
-        g_win << cxxcurses::format(row * 2 + 1, col * 5)("|");
+        g_win << cxxcurses::format(int(row) * 2 + 1, int(col) * 5)("|");
     }
-    g_win << cxxcurses::format(row * 2, 0)("---------------------\n");
+    g_win << cxxcurses::format(int(row) * 2, 0)("---------------------\n");
 
-    g_win << cxxcurses::format(row * 2 + 1, 0)("Score: " + std::to_string(board.score()));
-    g_win << cxxcurses::format(row * 2 + 3, 0)("q: Quit");
-    g_win << cxxcurses::format(row * 2 + 4, 0)("n: New game");
+    g_win << cxxcurses::format(int(row) * 2 + 1, 0)("Score: " + std::to_string(board.score()));
+    g_win << cxxcurses::format(int(row) * 2 + 3, 0)("q: Quit");
+    g_win << cxxcurses::format(int(row) * 2 + 4, 0)("n: New game");
 }

@@ -15,13 +15,13 @@ void draw(ConnectFour game, int column)
         for (size_t col = 0; col < 7; ++col) {
             switch (board[col][row]) {
             case Tile::EMPTY:
-                g_win << cxxcurses::format(6 - row, col * 2)("_");
+                g_win << cxxcurses::format(6 - int(row), int(col) * 2)("_");
                 break;
             case Tile::RED:
-                g_win << cxxcurses::format(6 - row, col * 2)("{r}", "O");
+                g_win << cxxcurses::format(6 - int(row), int(col) * 2)("{r}", "O");
                 break;
             case Tile::YEL:
-                g_win << cxxcurses::format(6 - row, col * 2)("{y}", "O");
+                g_win << cxxcurses::format(6 - int(row), int(col) * 2)("{y}", "O");
                 break;
             }
         }

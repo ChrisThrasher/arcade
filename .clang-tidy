@@ -1,6 +1,6 @@
 Checks: >
   -*,
-  #bugprone-*,
+  bugprone-*,
   clang-analyzer-*,
   concurrency-*,
   misc-*,
@@ -8,7 +8,8 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
-  #-bugprone-easily-swappable-parameters,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-exception-escape,
   -modernize-use-trailing-return-type,
   -readability-braces-around-statements,
   -readability-function-cognitive-complexity,

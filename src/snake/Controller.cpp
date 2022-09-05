@@ -55,19 +55,19 @@ void Controller::draw()
         for (size_t col = 0; col < board[row].size(); ++col) {
             switch (board[row][col]) {
             case Game::Tile::EMPTY:
-                g_win << cxxcurses::format(row, col * 2)(".");
+                g_win << cxxcurses::format(int(row), int(col) * 2)(".");
                 break;
             case Game::Tile::SNAKE:
-                g_win << cxxcurses::format(row, col * 2)("{g}", "0");
+                g_win << cxxcurses::format(int(row), int(col) * 2)("{g}", "0");
                 break;
             case Game::Tile::FRUIT:
-                g_win << cxxcurses::format(row, col * 2)("{r}", "X");
+                g_win << cxxcurses::format(int(row), int(col) * 2)("{r}", "X");
                 break;
             }
         }
     }
 
-    g_win << cxxcurses::format(++row, 0)("Score: " + std::to_string(m_game.score()));
+    g_win << cxxcurses::format(int(++row), 0)("Score: " + std::to_string(m_game.score()));
 
     refresh();
 }

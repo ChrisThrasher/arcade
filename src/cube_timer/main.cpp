@@ -79,7 +79,7 @@ static void draw_scramble(int& row, const Scramble& scramble)
     const auto break_point = 28 / width;
 
     for (size_t i = 0; i < scramble.size(); ++i) {
-        g_win << cxxcurses::format(row, (i % break_point) * width)(scramble[i]);
+        g_win << cxxcurses::format(row, int((i % break_point) * width))(scramble[i]);
 
         const bool end_of_row = (i + 1) % break_point == 0;
         const bool not_last_element = i + 1 < scramble.size();
