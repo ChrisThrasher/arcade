@@ -14,7 +14,7 @@ class Board {
 
     enum class Direction { UP, DOWN, LEFT, RIGHT };
 
-    void move(const Direction);
+    void move(Direction direction);
     void add_new_tile();
     [[nodiscard]] bool is_full() const;
 

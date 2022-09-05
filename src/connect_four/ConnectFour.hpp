@@ -15,7 +15,7 @@ class ConnectFour {
     [[nodiscard]] auto rows() const { return m_board[0].size(); }
 
 public:
-    void add(size_t);
+    void add(size_t location);
     [[nodiscard]] auto board() const { return m_board; }
     [[nodiscard]] auto running() const { return m_running; }
     [[nodiscard]] auto active_tile() const { return m_active_tile; }
