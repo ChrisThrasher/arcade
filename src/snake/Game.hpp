@@ -21,9 +21,9 @@ public:
     void left();
     void right();
 
-    bool running() const { return m_running; }
-    auto board() const { return m_board; }
-    auto score() const { return m_score; }
+    [[nodiscard]] bool running() const { return m_running; }
+    [[nodiscard]] auto board() const { return m_board; }
+    [[nodiscard]] auto score() const { return m_score; }
 
 private:
     static constexpr size_t m_size { 20 };

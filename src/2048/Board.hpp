@@ -16,7 +16,7 @@ class Board {
 
     void move(const Direction);
     void add_new_tile();
-    bool is_full() const;
+    [[nodiscard]] bool is_full() const;
 
 public:
     Board();
@@ -24,9 +24,9 @@ public:
     enum class State { IN_PROGRESS, SUCCESS, FAILURE };
 
     void reset();
-    auto game_state() const -> State;
-    auto score() const { return m_score; }
-    auto data() const { return m_board; }
+    [[nodiscard]] auto game_state() const -> State;
+    [[nodiscard]] auto score() const { return m_score; }
+    [[nodiscard]] auto data() const { return m_board; }
 
     void up() { move(Direction::UP); }
     void down() { move(Direction::DOWN); }

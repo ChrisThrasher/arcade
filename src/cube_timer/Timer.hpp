@@ -15,6 +15,6 @@ public:
     void clear();
     void restart();
 
-    auto query() const -> std::chrono::nanoseconds;
-    auto running() const { return m_running; }
+    [[nodiscard]] auto query() const -> std::chrono::nanoseconds;
+    [[nodiscard]] auto running() const { return m_running; }
 };

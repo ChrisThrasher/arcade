@@ -10,13 +10,13 @@ class ConnectFour {
     Tile m_active_tile { Tile::RED };
     bool m_running { true };
 
-    bool is_running() const;
-    auto cols() const { return m_board.size(); }
-    auto rows() const { return m_board[0].size(); }
+    [[nodiscard]] bool is_running() const;
+    [[nodiscard]] auto cols() const { return m_board.size(); }
+    [[nodiscard]] auto rows() const { return m_board[0].size(); }
 
 public:
     void add(size_t);
-    auto board() const { return m_board; }
-    auto running() const { return m_running; }
-    auto active_tile() const { return m_active_tile; }
+    [[nodiscard]] auto board() const { return m_board; }
+    [[nodiscard]] auto running() const { return m_running; }
+    [[nodiscard]] auto active_tile() const { return m_active_tile; }
 };

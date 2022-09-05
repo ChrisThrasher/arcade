@@ -14,5 +14,5 @@ public:
     ~Controller();
 
     void cycle();
-    bool running() const { return m_running; }
+    [[nodiscard]] bool running() const { return m_running; }
 };
