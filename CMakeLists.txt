@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(FetchContent)
 FetchContent_Declare(cxxcurses
-    GIT_REPOSITORY "https://github.com/hjaremko/cxxcurses.git"
+    GIT_REPOSITORY https://github.com/hjaremko/cxxcurses.git
     GIT_TAG master)
 FetchContent_MakeAvailable(cxxcurses)
 
