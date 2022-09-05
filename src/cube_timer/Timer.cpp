@@ -1,4 +1,4 @@
-#include "Timer.h"
+#include "Timer.hpp"
 
 static auto now() { return std::chrono::system_clock::now(); }
 

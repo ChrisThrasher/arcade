@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game.h"
+#include "Game.hpp"
 
 class Controller {
     void get_input();

@@ -1,5 +1,5 @@
-#include "Scramble.h"
-#include "Timer.h"
+#include "Scramble.hpp"
+#include "Timer.hpp"
 
 #include <cxxcurses/cxxcurses.hpp>
 

@@ -1,4 +1,4 @@
-#include "Scramble.h"
+#include "Scramble.hpp"
 
 #include <array>
 #include <cctype>

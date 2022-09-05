@@ -1,4 +1,4 @@
-#include "ConnectFour.h"
+#include "ConnectFour.hpp"
 
 #include <cxxcurses/cxxcurses.hpp>
 

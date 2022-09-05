@@ -1,4 +1,4 @@
-#include "Board.h"
+#include "Board.hpp"
 
 void merge(int& dest, int& src, int& score)
 {
