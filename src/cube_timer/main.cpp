@@ -158,7 +158,7 @@ static void draw_times(int& row, const std::vector<std::chrono::nanoseconds>& ti
 
 int main()
 {
-    cxxcurses::terminal init;
+    const cxxcurses::terminal init;
     timeout(10);
 
     auto times = std::map<Puzzle, std::vector<std::chrono::nanoseconds>>();

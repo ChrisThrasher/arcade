@@ -45,7 +45,7 @@ void draw(ConnectFour game, int column)
 
 int main()
 {
-    cxxcurses::terminal init;
+    const cxxcurses::terminal init;
 
     ConnectFour game;
     while (game.running()) {

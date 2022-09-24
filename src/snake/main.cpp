@@ -7,7 +7,7 @@
 
 int main()
 {
-    cxxcurses::terminal init;
+    const cxxcurses::terminal init;
 
     Controller controller;
 

@@ -13,7 +13,7 @@ void draw(const Board& board);
 
 int main()
 {
-    cxxcurses::terminal init;
+    const cxxcurses::terminal init;
 
     Board board;
 
