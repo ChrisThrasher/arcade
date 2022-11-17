@@ -1,5 +1,7 @@
 #include "Game.hpp"
 
+static auto rng = std::mt19937(std::random_device()());
+
 Game::Game()
 {
     m_snake = { std::ref(m_board[m_head.first][m_head.second]) };
@@ -49,11 +51,11 @@ void Game::cycle()
 
 void Game::add_fruit()
 {
-    auto row = m_distribution(m_rng);
-    auto col = m_distribution(m_rng);
+    auto row = m_distribution(rng);
+    auto col = m_distribution(rng);
     while (m_board[row][col] == Tile::SNAKE) {
-        row = m_distribution(m_rng);
-        col = m_distribution(m_rng);
+        row = m_distribution(rng);
+        col = m_distribution(rng);
     }
     m_board[row][col] = Tile::FRUIT;
 }

@@ -5,7 +5,7 @@
 #include <functional>
 #include <random>
 
-static auto g_rng = std::mt19937(std::random_device()());
+static auto rng = std::mt19937(std::random_device()());
 
 static auto generate_2x2_move() -> std::string
 {
@@ -14,9 +14,9 @@ static auto generate_2x2_move() -> std::string
     static std::uniform_int_distribution<size_t> s_dist(0, moves.size() - 1);
     static std::string prev;
 
-    std::string move = moves[s_dist(g_rng)];
+    std::string move = moves[s_dist(rng)];
     while (move[0] == prev[0])
-        move = moves[s_dist(g_rng)];
+        move = moves[s_dist(rng)];
 
     prev = move;
     return move;
@@ -31,9 +31,9 @@ static auto generate_3x3_move() -> std::string
     static std::string prev1;
     static std::string prev2;
 
-    std::string move = moves[s_dist(g_rng)];
+    std::string move = moves[s_dist(rng)];
     while (move[0] == prev1[0] || move[0] == prev2[0])
-        move = moves[s_dist(g_rng)];
+        move = moves[s_dist(rng)];
 
     prev2 = prev1;
     prev1 = move;
@@ -52,9 +52,9 @@ static auto generate_4x4_move() -> std::string
     static std::string prev1;
     static std::string prev2;
 
-    std::string move = moves[s_dist(g_rng)];
+    std::string move = moves[s_dist(rng)];
     while (std::tolower(move[0]) == std::tolower(prev1[0]) || std::tolower(move[0]) == std::tolower(prev2[0]))
-        move = moves[s_dist(g_rng)];
+        move = moves[s_dist(rng)];
 
     prev2 = prev1;
     prev1 = move;

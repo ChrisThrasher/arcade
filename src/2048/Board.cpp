@@ -1,6 +1,8 @@
 #include "Board.hpp"
 
-void merge(int& dest, int& src, int& score)
+static auto rng = std::mt19937(std::random_device()());
+
+static void merge(int& dest, int& src, int& score)
 {
     if (dest == src)
         score += dest + src;
@@ -8,7 +10,7 @@ void merge(int& dest, int& src, int& score)
     src = 0;
 }
 
-void process_tileset(int& tile1, int& tile2, int& tile3, int& tile4, int& score)
+static void process_tileset(int& tile1, int& tile2, int& tile3, int& tile4, int& score)
 {
     std::array<std::reference_wrapper<int>, 4> tileset
         = { std::ref(tile1), std::ref(tile2), std::ref(tile3), std::ref(tile4) };
@@ -69,9 +71,9 @@ void Board::move(const Direction direction)
 void Board::add_new_tile()
 {
     while (not is_full()) {
-        auto& tile = m_board[m_location_distribution(m_rng)][m_location_distribution(m_rng)];
+        auto& tile = m_board[m_location_distribution(rng)][m_location_distribution(rng)];
         if (tile == 0) {
-            tile = m_value_distribution(m_rng) ? 4 : 2;
+            tile = m_value_distribution(rng) ? 4 : 2;
             return;
         }
     }
