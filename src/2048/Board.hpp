@@ -5,7 +5,7 @@
 #include <random>
 
 class Board {
-    std::array<std::array<int, 4>, 4> m_board {};
+    std::array<std::array<int, 4>, 4> m_board;
     std::mt19937 m_rng { std::random_device()() };
     std::uniform_int_distribution<size_t> m_location_distribution { 0, 3 };
     std::bernoulli_distribution m_value_distribution { 0.1 };

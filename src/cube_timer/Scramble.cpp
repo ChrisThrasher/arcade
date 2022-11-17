@@ -63,7 +63,7 @@ static auto generate_4x4_move() -> std::string
 
 static auto generate_scramble(const size_t length, const std::function<std::string()>& generator)
 {
-    auto scramble = Scramble {};
+    auto scramble = Scramble();
     for (size_t i = 0; i < length; ++i)
         scramble.push_back(generator());
     return scramble;

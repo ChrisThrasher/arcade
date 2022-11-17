@@ -6,7 +6,7 @@
 enum class Tile { EMPTY, RED, YEL };
 
 class ConnectFour {
-    std::array<std::array<Tile, 6>, 7> m_board {}; // column-wise indexing
+    std::array<std::array<Tile, 6>, 7> m_board; // column-wise indexing
     Tile m_active_tile { Tile::RED };
     bool m_running { true };
 

@@ -27,8 +27,8 @@ public:
 
 private:
     static constexpr size_t m_size { 20 };
-    std::array<std::array<Tile, m_size>, m_size> m_board {};
-    std::deque<std::reference_wrapper<Tile>> m_snake {};
+    std::array<std::array<Tile, m_size>, m_size> m_board;
+    std::deque<std::reference_wrapper<Tile>> m_snake;
     std::pair<size_t, size_t> m_head { 1, 3 };
     Direction m_direction { Direction::NONE };
     bool m_running { true };

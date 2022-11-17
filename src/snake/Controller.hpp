@@ -6,7 +6,7 @@ class Controller {
     void get_input();
     void draw();
 
-    Game m_game {};
+    Game m_game;
     bool m_running { true };
 
 public:
