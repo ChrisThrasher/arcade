@@ -34,7 +34,6 @@ private:
     bool m_running { true };
     int m_score { 0 };
 
-    std::random_device m_rd {};
-    std::mt19937 m_rng { m_rd() };
+    std::mt19937 m_rng { std::random_device()() };
     std::uniform_int_distribution<size_t> m_distribution { 0, m_size - 1 };
 };

@@ -5,8 +5,7 @@
 #include <functional>
 #include <random>
 
-static std::random_device g_rd;
-static std::mt19937 g_rng(g_rd());
+static auto g_rng = std::mt19937(std::random_device()());
 
 static auto generate_2x2_move() -> std::string
 {
