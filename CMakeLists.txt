@@ -9,6 +9,10 @@ FetchContent_Declare(cxxcurses
     GIT_TAG master)
 FetchContent_MakeAvailable(cxxcurses)
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
+    add_compile_options(-Werror -Wall -Wextra -Wpedantic -Wold-style-cast)
+endif()
+
 add_subdirectory(src)
 
 add_custom_target(format
