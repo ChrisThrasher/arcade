@@ -1,0 +1,39 @@
+name: CI
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    name: ${{matrix.platform.name}} ${{matrix.config.name}}
+    runs-on: ${{matrix.platform.os}}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+        - { name: Linux GCC,   os: ubuntu-latest }
+        - { name: Linux Clang, os: ubuntu-latest, flags: -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ }
+        - { name: macOS,       os: macos-latest }
+        config:
+        - { name: Debug }
+        - { name: Release }
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{matrix.config.name}} ${{matrix.platform.flags}}
+
+    - name: Build
+      run: cmake --build build --config ${{matrix.config.name}}
+
+    - name: Format
+      if: matrix.platform.name == 'Linux Clang' && matrix.config.name == 'Debug'
+      run: |
+        cmake --build build --target format
+        git diff --exit-code
+
+    - name: Tidy
+      if: matrix.platform.name == 'Linux Clang' && matrix.config.name == 'Debug'
+      run: cmake --build build --target tidy
