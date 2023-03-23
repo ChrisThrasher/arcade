@@ -2,7 +2,9 @@
 
 #include <cxxcurses/cxxcurses.hpp>
 
-static const auto& g_win = cxxcurses::terminal::main_win;
+namespace {
+const auto& g_win = cxxcurses::terminal::main_win;
+}
 
 Controller::Controller() { timeout(50); }
 

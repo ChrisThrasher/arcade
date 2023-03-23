@@ -7,7 +7,9 @@
 #include <map>
 #include <sstream>
 
-static const auto& g_win = cxxcurses::terminal::main_win;
+namespace {
+const auto& g_win = cxxcurses::terminal::main_win;
+}
 
 void draw(const Board& board);
 
