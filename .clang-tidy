@@ -12,7 +12,6 @@ Checks: >
   -bugprone-exception-escape,
   -modernize-use-trailing-return-type,
   -readability-braces-around-statements,
-  -readability-function-cognitive-complexity,
   -readability-identifier-length,
   -readability-magic-numbers,
 CheckOptions:
@@ -22,4 +21,6 @@ CheckOptions:
   - { key: readability-identifier-naming.MemberCase,          value: lower_case }
   - { key: readability-identifier-naming.PrivateMemberCase,   value: lower_case }
   - { key: readability-identifier-naming.PrivateMemberPrefix, value: m_ }
+  - { key: readability-function-cognitive-complexity.Threshold,    value: 36   }
+  - { key: readability-function-cognitive-complexity.IgnoreMacros, value: True }
 WarningsAsErrors: '*'
