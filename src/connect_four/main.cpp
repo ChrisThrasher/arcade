@@ -4,7 +4,9 @@
 
 #include <algorithm>
 
-static const auto& g_win = cxxcurses::terminal::main_win;
+namespace {
+const auto& g_win = cxxcurses::terminal::main_win;
+}
 
 void draw(ConnectFour game, int column)
 {

@@ -11,9 +11,10 @@
 #include <sstream>
 #include <vector>
 
-static const auto& g_win = cxxcurses::terminal::main_win;
+namespace {
+const auto& g_win = cxxcurses::terminal::main_win;
 
-static auto format_duration(std::chrono::nanoseconds duration)
+auto format_duration(std::chrono::nanoseconds duration)
 {
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(duration);
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(duration -= minutes);
@@ -27,7 +28,7 @@ static auto format_duration(std::chrono::nanoseconds duration)
     return ss.str();
 }
 
-static void draw_header(int& row)
+void draw_header(int& row)
 {
     ++row;
     g_win << cxxcurses::format(row++, 0)("=========Controls==========");
@@ -40,7 +41,7 @@ static void draw_header(int& row)
     g_win << cxxcurses::format(row++, 0)("q: Quit");
 }
 
-static void draw_puzzle_name(int& row, const Puzzle puzzle)
+void draw_puzzle_name(int& row, const Puzzle puzzle)
 {
     std::string puzzle_name;
     switch (puzzle) {
@@ -66,7 +67,7 @@ static void draw_puzzle_name(int& row, const Puzzle puzzle)
     g_win << cxxcurses::format(row++, 12)(puzzle_name);
 }
 
-static void draw_scramble(int& row, const Scramble& scramble)
+void draw_scramble(int& row, const Scramble& scramble)
 {
     if (scramble.empty())
         return;
@@ -89,7 +90,7 @@ static void draw_scramble(int& row, const Scramble& scramble)
     ++row;
 }
 
-static void draw_timer(int& row, Timer& timer, bool& inspecting)
+void draw_timer(int& row, Timer& timer, bool& inspecting)
 {
     using namespace std::chrono_literals;
 
@@ -112,7 +113,7 @@ static void draw_timer(int& row, Timer& timer, bool& inspecting)
     g_win << cxxcurses::format(row++, 10)(format, format_duration(time));
 }
 
-static void draw_times(int& row, const std::vector<std::chrono::nanoseconds>& times)
+void draw_times(int& row, const std::vector<std::chrono::nanoseconds>& times)
 {
     ++row;
     g_win << cxxcurses::format(row++, 0)("===========Times===========");
@@ -154,6 +155,7 @@ static void draw_times(int& row, const std::vector<std::chrono::nanoseconds>& ti
             / (sorted_times.size() - 2);
         g_win << cxxcurses::format(row++, 0)("Mid avg: " + format_duration(mid_avg));
     }
+}
 }
 
 int main()
